@@ -7,27 +7,56 @@ from preprocessing import (
 )
 
 from config import RAW_DATA_PATH, PROCESSED_DATA_PATH
-
+from data_validation import run_data_validation
+from logger import get_logger, generate_run_id
+logger = get_logger()
+from s3_utils import upload_file
 
 def run_pipeline():
 
-    print("Loading dataset...")
-    df = load_dataset(RAW_DATA_PATH)
+    run_id = generate_run_id()
 
-    print("Cleaning dataset...")
-    df = clean_dataset(df)
+    try:
 
-    print("Handling outliers...")
-    df = handle_outliers(df)
+        logger.info(f"RUN_ID={run_id} | Pipeline started")
 
-    print("Creating features...")
-    df = feature_engineering(df)
+        logger.info(f"RUN_ID={run_id} | Loading dataset")
+        df = load_dataset(RAW_DATA_PATH)
 
-    print("Saving processed dataset...")
-    save_processed_dataset(df, PROCESSED_DATA_PATH)
+        logger.info(f"RUN_ID={run_id} | Uploading raw dataset to S3")
+        upload_file(
+            RAW_DATA_PATH,
+            "raw-data/retail_store_inventory.csv"
+        )
 
-    print("Pipeline completed successfully")
+        logger.info(f"RUN_ID={run_id} | Cleaning dataset")
+        df = clean_dataset(df)
+
+        logger.info(f"RUN_ID={run_id} | Running data validation")
+        run_data_validation(df)
+
+        logger.info(f"RUN_ID={run_id} | Handling outliers")
+        df = handle_outliers(df)
+
+        logger.info(f"RUN_ID={run_id} | Creating features")
+        df = feature_engineering(df)
+
+        logger.info(f"RUN_ID={run_id} | Saving processed dataset")
+        save_processed_dataset(df, PROCESSED_DATA_PATH)
+
+        logger.info(f"RUN_ID={run_id} | Uploading processed dataset to S3")
+        upload_file(
+            PROCESSED_DATA_PATH,
+            "processed-data/processed_sales_data.csv"
+        )
+
+        logger.info(f"RUN_ID={run_id} | Pipeline completed successfully")
+
+    except Exception as e:
+
+        logger.error(f"RUN_ID={run_id} | Pipeline failed: {str(e)}")
+        raise
 
 if __name__ == "__main__":
     run_pipeline()
-    
+
