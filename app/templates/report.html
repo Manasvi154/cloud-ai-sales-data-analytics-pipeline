@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+{% block title %}Report | Data Automation{% endblock %}
+{% block content %}
+<section class="space-y-6">
+    {{ page_header("Step 6", "Downloadable Report", "PDF generation will be integrated in Phase 10.") }}
+    {{ pipeline_steps("6") }}
+
+    <article class="card p-6 prose prose-invert max-w-none reveal">
+        <pre class="whitespace-pre-wrap text-sm">{{ report_body }}</pre>
+    </article>
+
+    <div class="flex gap-3 flex-wrap">
+        {{ action_button(url_for('analysis.history'), "Back to History", "secondary") }}
+        {{ action_button(url_for('dataset.upload_dataset'), "Run New Analysis", "ghost") }}
+    </div>
+</section>
+{% endblock %}

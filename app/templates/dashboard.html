@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+{% block title %}Dashboard | Data Automation{% endblock %}
+{% block content %}
+<section class="space-y-6">
+    {{ page_header("Step 5", "Dashboard Preview", "QuickSight embed will replace this placeholder in Phase 8.") }}
+    {{ pipeline_steps("5") }}
+
+    <div class="card p-6 reveal">
+        <h2 class="font-bold mb-4">Feature Importance (Mock)</h2>
+        {% set values = [78, 62, 44, 31] %}
+        {% set labels = ["engagement_score", "avg_order_value", "retention_days", "campaign_touchpoints"] %}
+        <div class="space-y-4">
+            {% for value in values %}
+            <div>
+                <div class="flex justify-between text-sm mb-1">
+                    <span>{{ labels[loop.index0] }}</span>
+                    <span>{{ value }}%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" data-progress="{{ value }}"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="flex gap-3 flex-wrap">
+        {{ action_button(url_for('analysis.report', job_id=job.job_id), "Go to Report", "primary") }}
+        {{ action_button(url_for('analysis.history'), "Back to History", "secondary") }}
+    </div>
+</section>
+{% endblock %}

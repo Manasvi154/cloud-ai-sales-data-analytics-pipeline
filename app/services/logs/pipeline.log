@@ -1,0 +1,479 @@
+2026-04-03 21:37:22,528 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.8:5000
+2026-04-03 21:37:22,528 | INFO | [33mPress CTRL+C to quit[0m
+2026-04-03 21:37:22,537 | INFO |  * Restarting with stat
+2026-04-03 21:37:26,745 | WARNING |  * Debugger is active!
+2026-04-03 21:37:26,756 | INFO |  * Debugger PIN: 575-569-703
+2026-04-03 21:40:55,905 | INFO | 127.0.0.1 - - [03/Apr/2026 21:40:55] "GET / HTTP/1.1" 200 -
+2026-04-03 21:40:56,146 | INFO | 127.0.0.1 - - [03/Apr/2026 21:40:56] "GET /static/css/styles.css HTTP/1.1" 200 -
+2026-04-03 21:40:56,186 | INFO | 127.0.0.1 - - [03/Apr/2026 21:40:56] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-04-03 21:40:56,436 | INFO | 127.0.0.1 - - [03/Apr/2026 21:40:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-03 21:41:20,104 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.8:5000
+2026-04-03 21:41:20,104 | INFO | [33mPress CTRL+C to quit[0m
+2026-04-03 21:41:20,106 | INFO |  * Restarting with stat
+2026-04-03 21:41:22,267 | WARNING |  * Debugger is active!
+2026-04-03 21:41:22,274 | INFO |  * Debugger PIN: 575-569-703
+2026-04-03 21:41:22,388 | INFO | 127.0.0.1 - - [03/Apr/2026 21:41:22] "GET / HTTP/1.1" 200 -
+2026-04-03 21:41:22,477 | INFO | 127.0.0.1 - - [03/Apr/2026 21:41:22] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:41:22,487 | INFO | 127.0.0.1 - - [03/Apr/2026 21:41:22] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:42:55,002 | INFO | 127.0.0.1 - - [03/Apr/2026 21:42:55] "GET / HTTP/1.1" 200 -
+2026-04-03 21:42:55,034 | INFO | 127.0.0.1 - - [03/Apr/2026 21:42:55] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:42:55,043 | INFO | 127.0.0.1 - - [03/Apr/2026 21:42:55] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:44:57,387 | INFO | 127.0.0.1 - - [03/Apr/2026 21:44:57] "GET /auth/login HTTP/1.1" 200 -
+2026-04-03 21:44:57,406 | INFO | 127.0.0.1 - - [03/Apr/2026 21:44:57] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:44:57,411 | INFO | 127.0.0.1 - - [03/Apr/2026 21:44:57] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:45:20,010 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:20] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2026-04-03 21:45:20,026 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:20] "GET /auth/login HTTP/1.1" 200 -
+2026-04-03 21:45:20,055 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:20] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:45:20,056 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:20] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:45:46,349 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:46] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2026-04-03 21:45:46,377 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:46] "GET /auth/login HTTP/1.1" 200 -
+2026-04-03 21:45:46,404 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:46] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:45:46,407 | INFO | 127.0.0.1 - - [03/Apr/2026 21:45:46] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:46:18,209 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:18] "GET /auth/forgot-password HTTP/1.1" 200 -
+2026-04-03 21:46:18,232 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:18] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:46:18,237 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:18] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:46:30,182 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:30] "[32mPOST /auth/forgot-password HTTP/1.1[0m" 302 -
+2026-04-03 21:46:30,248 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:30] "GET /auth/register HTTP/1.1" 200 -
+2026-04-03 21:46:30,293 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:30] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:46:30,306 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:30] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:46:48,269 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:48] "[32mPOST /auth/register HTTP/1.1[0m" 302 -
+2026-04-03 21:46:48,336 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:48] "GET /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1" 200 -
+2026-04-03 21:46:48,401 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:48] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:46:48,407 | INFO | 127.0.0.1 - - [03/Apr/2026 21:46:48] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:59:01,222 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:01] "GET /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1" 200 -
+2026-04-03 21:59:01,244 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:01] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 21:59:01,253 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:01] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:59:34,421 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:34] "[32mPOST /auth/resend-otp HTTP/1.1[0m" 302 -
+2026-04-03 21:59:34,433 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:34] "GET /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1" 200 -
+2026-04-03 21:59:34,487 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:34] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 21:59:34,497 | INFO | 127.0.0.1 - - [03/Apr/2026 21:59:34] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:00:14,821 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.8:5000
+2026-04-03 22:00:14,821 | INFO | [33mPress CTRL+C to quit[0m
+2026-04-03 22:00:14,826 | INFO |  * Restarting with stat
+2026-04-03 22:00:16,867 | WARNING |  * Debugger is active!
+2026-04-03 22:00:16,877 | INFO |  * Debugger PIN: 575-569-703
+2026-04-03 22:00:42,011 | INFO | 127.0.0.1 - - [03/Apr/2026 22:00:42] "GET /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1" 200 -
+2026-04-03 22:00:42,142 | INFO | 127.0.0.1 - - [03/Apr/2026 22:00:42] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:00:42,152 | INFO | 127.0.0.1 - - [03/Apr/2026 22:00:42] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:19:41,362 | INFO | 127.0.0.1 - - [03/Apr/2026 22:19:41] "GET /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1" 200 -
+2026-04-03 22:19:41,388 | INFO | 127.0.0.1 - - [03/Apr/2026 22:19:41] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:19:41,396 | INFO | 127.0.0.1 - - [03/Apr/2026 22:19:41] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:19:53,377 | INFO | 127.0.0.1 - - [03/Apr/2026 22:19:53] "GET /auth/register HTTP/1.1" 200 -
+2026-04-03 22:19:53,394 | INFO | 127.0.0.1 - - [03/Apr/2026 22:19:53] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:19:53,398 | INFO | 127.0.0.1 - - [03/Apr/2026 22:19:53] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:20:10,592 | INFO | 127.0.0.1 - - [03/Apr/2026 22:20:10] "[32mPOST /auth/register HTTP/1.1[0m" 302 -
+2026-04-03 22:20:10,610 | INFO | 127.0.0.1 - - [03/Apr/2026 22:20:10] "GET /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1" 200 -
+2026-04-03 22:20:10,666 | INFO | 127.0.0.1 - - [03/Apr/2026 22:20:10] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:20:10,666 | INFO | 127.0.0.1 - - [03/Apr/2026 22:20:10] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:21:21,776 | INFO | 127.0.0.1 - - [03/Apr/2026 22:21:21] "[32mPOST /auth/verify?email=20240804053@dypiu.ac.in HTTP/1.1[0m" 302 -
+2026-04-03 22:21:21,807 | INFO | 127.0.0.1 - - [03/Apr/2026 22:21:21] "GET / HTTP/1.1" 200 -
+2026-04-03 22:21:21,869 | INFO | 127.0.0.1 - - [03/Apr/2026 22:21:21] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:21:21,874 | INFO | 127.0.0.1 - - [03/Apr/2026 22:21:21] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:23:06,906 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:06] "GET /dataset/upload HTTP/1.1" 200 -
+2026-04-03 22:23:06,929 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:06] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:23:06,938 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:06] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:23:25,991 | INFO | RUN_ID=a92c6ac8 | Pipeline started
+2026-04-03 22:23:25,991 | INFO | RUN_ID=a92c6ac8 | Loading dataset
+2026-04-03 22:23:25,997 | ERROR | RUN_ID=a92c6ac8 | Pipeline failed: [Errno 2] No such file or directory: 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\data/raw/retail_store_inventory.csv'
+2026-04-03 22:23:26,001 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:26] "[32mPOST /dataset/upload HTTP/1.1[0m" 302 -
+2026-04-03 22:23:26,067 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:26] "GET /analysis/processing/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:23:26,095 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:26] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:23:26,097 | INFO | 127.0.0.1 - - [03/Apr/2026 22:23:26] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:26:56,835 | INFO | 127.0.0.1 - - [03/Apr/2026 22:26:56] "GET /analysis/results/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:26:56,858 | INFO | 127.0.0.1 - - [03/Apr/2026 22:26:56] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:26:56,884 | INFO | 127.0.0.1 - - [03/Apr/2026 22:26:56] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:01,860 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:01] "GET /analysis/dashboard/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:27:01,882 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:01] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:01,897 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:01] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:13,567 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:13] "GET /analysis/report/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:27:13,588 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:13] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:13,593 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:13] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:24,077 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:24] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-03 22:27:24,096 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:24,100 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:28,178 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:28] "GET /analysis/results/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:27:28,196 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:28,198 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:28] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:34,532 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:34] "GET /analysis/dashboard/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:27:34,566 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:34] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:34,568 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:34] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:37,985 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:37] "GET /analysis/report/d1be99ca-a85f-45bd-804a-d6f159d08934 HTTP/1.1" 200 -
+2026-04-03 22:27:38,013 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:38] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:38,015 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:38] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-03 22:27:40,096 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:40] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-03 22:27:40,115 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:40] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-03 22:27:40,118 | INFO | 127.0.0.1 - - [03/Apr/2026 22:27:40] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:50:51,149 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.7:5000
+2026-04-04 14:50:51,149 | INFO | [33mPress CTRL+C to quit[0m
+2026-04-04 14:50:51,149 | INFO |  * Restarting with stat
+2026-04-04 14:50:52,398 | WARNING |  * Debugger is active!
+2026-04-04 14:50:52,398 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 14:51:37,433 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:37] "GET / HTTP/1.1" 200 -
+2026-04-04 14:51:37,727 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:37] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:51:37,746 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:37] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:51:37,830 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:37] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-04 14:51:39,516 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:39] "GET /auth/login HTTP/1.1" 200 -
+2026-04-04 14:51:39,532 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:39] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:51:39,537 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:39] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:51:49,023 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:49] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2026-04-04 14:51:49,032 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:49] "GET / HTTP/1.1" 200 -
+2026-04-04 14:51:49,061 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:51:49,065 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:49] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:51:57,966 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:57] "GET /user HTTP/1.1" 200 -
+2026-04-04 14:51:57,989 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:57] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:51:57,989 | INFO | 127.0.0.1 - - [04/Apr/2026 14:51:57] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:52:08,449 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:08] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 14:52:08,449 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:08] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:52:08,469 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:52:12,615 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:12] "GET /about HTTP/1.1" 200 -
+2026-04-04 14:52:12,636 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:12] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:52:12,641 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:12] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:52:21,943 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:21] "GET / HTTP/1.1" 200 -
+2026-04-04 14:52:21,959 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:21] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:52:21,966 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:21] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:52:24,390 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:24] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 14:52:24,409 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:52:24,421 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:52:28,444 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:28] "GET /dataset/operation HTTP/1.1" 200 -
+2026-04-04 14:52:28,452 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:52:28,463 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:28] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:52:32,592 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:32] "GET /dataset/upload?operation=regression HTTP/1.1" 200 -
+2026-04-04 14:52:32,605 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:32] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:52:32,613 | INFO | 127.0.0.1 - - [04/Apr/2026 14:52:32] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:53:00,416 | INFO | RUN_ID=3113be3c | Pipeline started
+2026-04-04 14:53:00,416 | INFO | RUN_ID=3113be3c | Loading dataset
+2026-04-04 14:53:00,432 | ERROR | RUN_ID=3113be3c | Pipeline failed: [Errno 2] No such file or directory: 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\data/raw/retail_store_inventory.csv'
+2026-04-04 14:53:00,436 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:00] "[32mPOST /dataset/upload?operation=regression HTTP/1.1[0m" 302 -
+2026-04-04 14:53:00,481 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:00] "GET /analysis/processing/8e5fbb24-476e-464b-ad42-00ad41406442 HTTP/1.1" 200 -
+2026-04-04 14:53:00,500 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:00] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:53:00,502 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:00] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:53:49,965 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:49] "GET /analysis/results/8e5fbb24-476e-464b-ad42-00ad41406442 HTTP/1.1" 200 -
+2026-04-04 14:53:49,981 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:53:49,984 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:49] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:53:51,965 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:51] "GET /analysis/dashboard/8e5fbb24-476e-464b-ad42-00ad41406442 HTTP/1.1" 200 -
+2026-04-04 14:53:51,972 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:51] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:53:51,986 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:51] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:53:53,837 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:53] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 14:53:53,849 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:53] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 14:53:53,854 | INFO | 127.0.0.1 - - [04/Apr/2026 14:53:53] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 14:55:02,755 | INFO | 192.168.1.7 - - [04/Apr/2026 14:55:02] "GET / HTTP/1.1" 200 -
+2026-04-04 14:55:02,818 | INFO | 192.168.1.7 - - [04/Apr/2026 14:55:02] "GET /static/css/styles.css HTTP/1.1" 200 -
+2026-04-04 14:55:02,827 | INFO | 192.168.1.7 - - [04/Apr/2026 14:55:02] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-04-04 14:55:03,232 | INFO | 192.168.1.7 - - [04/Apr/2026 14:55:03] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-04 17:57:47,670 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.7:5000
+2026-04-04 17:57:47,674 | INFO | [33mPress CTRL+C to quit[0m
+2026-04-04 17:57:47,681 | INFO |  * Restarting with stat
+2026-04-04 17:57:50,558 | WARNING |  * Debugger is active!
+2026-04-04 17:57:50,571 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 17:57:51,069 | INFO | 127.0.0.1 - - [04/Apr/2026 17:57:51] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 17:57:51,823 | INFO | 127.0.0.1 - - [04/Apr/2026 17:57:51] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 17:57:51,828 | INFO | 127.0.0.1 - - [04/Apr/2026 17:57:51] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 17:58:49,707 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:49] "GET /user HTTP/1.1" 200 -
+2026-04-04 17:58:49,722 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 17:58:49,730 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:49] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 17:58:53,322 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:53] "GET / HTTP/1.1" 200 -
+2026-04-04 17:58:53,343 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:53] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 17:58:53,361 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:53] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 17:58:54,951 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:54] "GET /dataset/operation HTTP/1.1" 200 -
+2026-04-04 17:58:54,976 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:54] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 17:58:55,003 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:55] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 17:58:59,503 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:59] "GET /dataset/upload?operation=forecasting HTTP/1.1" 200 -
+2026-04-04 17:58:59,523 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:59] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 17:58:59,528 | INFO | 127.0.0.1 - - [04/Apr/2026 17:58:59] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 17:59:09,520 | INFO | RUN_ID=6f82c74e | Pipeline started
+2026-04-04 17:59:09,520 | INFO | RUN_ID=6f82c74e | Loading dataset
+2026-04-04 17:59:09,929 | INFO | RUN_ID=6f82c74e | Uploading raw dataset to S3
+2026-04-04 17:59:09,930 | INFO | Uploading data/raw\retail_store_inventory.csv to S3 -> raw-data/retail_store_inventory.csv
+2026-04-04 17:59:13,521 | INFO | S3 upload successful: raw-data/retail_store_inventory.csv
+2026-04-04 17:59:13,521 | INFO | RUN_ID=6f82c74e | Cleaning dataset
+2026-04-04 17:59:13,773 | INFO | RUN_ID=6f82c74e | Running data validation
+2026-04-04 17:59:13,780 | INFO | RUN_ID=6f82c74e | Handling outliers
+2026-04-04 17:59:13,822 | INFO | RUN_ID=6f82c74e | Creating features
+2026-04-04 17:59:13,969 | INFO | RUN_ID=6f82c74e | Saving processed dataset
+2026-04-04 17:59:14,419 | INFO | RUN_ID=6f82c74e | Uploading processed dataset to S3
+2026-04-04 17:59:14,419 | INFO | Uploading data/processed\retail_store_inventory.csv to S3 -> processed-data/retail_store_inventory.csv
+2026-04-04 17:59:15,749 | INFO | S3 upload successful: processed-data/retail_store_inventory.csv
+2026-04-04 17:59:15,758 | INFO | RUN_ID=6f82c74e | Pipeline completed successfully
+2026-04-04 17:59:15,771 | INFO | 127.0.0.1 - - [04/Apr/2026 17:59:15] "[32mPOST /dataset/upload?operation=forecasting HTTP/1.1[0m" 302 -
+2026-04-04 17:59:15,798 | INFO | 127.0.0.1 - - [04/Apr/2026 17:59:15] "GET /analysis/processing/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 17:59:15,849 | INFO | 127.0.0.1 - - [04/Apr/2026 17:59:15] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 17:59:15,860 | INFO | 127.0.0.1 - - [04/Apr/2026 17:59:15] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 18:01:26,914 | INFO | 127.0.0.1 - - [04/Apr/2026 18:01:26] "GET /analysis/results/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 18:01:26,935 | INFO | 127.0.0.1 - - [04/Apr/2026 18:01:26] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 18:01:26,937 | INFO | 127.0.0.1 - - [04/Apr/2026 18:01:26] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 18:05:08,287 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:08] "GET /analysis/dashboard/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 18:05:08,306 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:08] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 18:05:08,316 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 18:05:18,174 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:18] "GET /analysis/report/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 18:05:18,194 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:18] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 18:05:18,197 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:18] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 18:05:38,001 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:38] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 18:05:38,026 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:38] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 18:05:38,037 | INFO | 127.0.0.1 - - [04/Apr/2026 18:05:38] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 18:08:13,103 | INFO | 127.0.0.1 - - [04/Apr/2026 18:08:13] "GET /analysis/results/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 18:08:13,125 | INFO | 127.0.0.1 - - [04/Apr/2026 18:08:13] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 18:08:13,160 | INFO | 127.0.0.1 - - [04/Apr/2026 18:08:13] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 20:10:33,442 | INFO | 127.0.0.1 - - [04/Apr/2026 20:10:33] "GET /analysis/dashboard/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 20:10:33,467 | INFO | 127.0.0.1 - - [04/Apr/2026 20:10:33] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 20:10:33,467 | INFO | 127.0.0.1 - - [04/Apr/2026 20:10:33] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 20:19:12,717 | INFO | 127.0.0.1 - - [04/Apr/2026 20:19:12] "GET /analysis/report/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 20:19:12,748 | INFO | 127.0.0.1 - - [04/Apr/2026 20:19:12] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 20:19:12,773 | INFO | 127.0.0.1 - - [04/Apr/2026 20:19:12] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 20:19:23,342 | INFO | 127.0.0.1 - - [04/Apr/2026 20:19:23] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 20:19:23,379 | INFO | 127.0.0.1 - - [04/Apr/2026 20:19:23] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 20:19:23,401 | INFO | 127.0.0.1 - - [04/Apr/2026 20:19:23] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 20:47:25,760 | INFO | 127.0.0.1 - - [04/Apr/2026 20:47:25] "GET /analysis/results/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1" 200 -
+2026-04-04 20:47:25,784 | INFO | 127.0.0.1 - - [04/Apr/2026 20:47:25] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 20:47:25,790 | INFO | 127.0.0.1 - - [04/Apr/2026 20:47:25] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 20:51:54,557 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 20:51:54,979 | INFO |  * Restarting with stat
+2026-04-04 20:51:58,358 | WARNING |  * Debugger is active!
+2026-04-04 20:51:58,364 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 20:56:10,654 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 20:56:10,928 | INFO |  * Restarting with stat
+2026-04-04 20:56:13,439 | WARNING |  * Debugger is active!
+2026-04-04 20:56:13,445 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 20:59:20,240 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 20:59:20,518 | INFO |  * Restarting with stat
+2026-04-04 20:59:23,000 | WARNING |  * Debugger is active!
+2026-04-04 20:59:23,007 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 21:01:03,967 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline_stub.py', reloading
+2026-04-04 21:01:04,182 | INFO |  * Restarting with stat
+2026-04-04 21:01:06,881 | WARNING |  * Debugger is active!
+2026-04-04 21:01:06,888 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 21:04:59,651 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline_stub.py', reloading
+2026-04-04 21:04:59,907 | INFO |  * Restarting with stat
+2026-04-04 21:05:02,582 | WARNING |  * Debugger is active!
+2026-04-04 21:05:02,582 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 21:15:26,002 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:26] "[33mGET /analysis/dashboard/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1[0m" 404 -
+2026-04-04 21:15:37,795 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.7:5000
+2026-04-04 21:15:37,795 | INFO | [33mPress CTRL+C to quit[0m
+2026-04-04 21:15:37,802 | INFO |  * Restarting with stat
+2026-04-04 21:15:40,037 | WARNING |  * Debugger is active!
+2026-04-04 21:15:40,041 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 21:15:40,135 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:40] "[33mGET /analysis/dashboard/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1[0m" 404 -
+2026-04-04 21:15:43,008 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:43] "[33mGET /analysis/dashboard/6164732b-e5d4-4e7c-b215-ca06801e8087 HTTP/1.1[0m" 404 -
+2026-04-04 21:15:53,819 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:53] "GET / HTTP/1.1" 200 -
+2026-04-04 21:15:54,005 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:54] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:15:54,007 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:54] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:15:58,805 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:58] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 21:15:58,825 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:58] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:15:58,825 | INFO | 127.0.0.1 - - [04/Apr/2026 21:15:58] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:16:01,805 | INFO | 127.0.0.1 - - [04/Apr/2026 21:16:01] "GET /dataset/operation HTTP/1.1" 200 -
+2026-04-04 21:16:01,840 | INFO | 127.0.0.1 - - [04/Apr/2026 21:16:01] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:16:01,844 | INFO | 127.0.0.1 - - [04/Apr/2026 21:16:01] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:16:06,020 | INFO | 127.0.0.1 - - [04/Apr/2026 21:16:06] "GET /dataset/upload?operation=forecasting HTTP/1.1" 200 -
+2026-04-04 21:16:06,036 | INFO | 127.0.0.1 - - [04/Apr/2026 21:16:06] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:16:06,040 | INFO | 127.0.0.1 - - [04/Apr/2026 21:16:06] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:20:24,638 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:24] "GET /user HTTP/1.1" 200 -
+2026-04-04 21:20:24,673 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:20:24,698 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:20:29,037 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:29] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 21:20:29,055 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:29] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:20:29,072 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:29] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:20:33,770 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:33] "GET / HTTP/1.1" 200 -
+2026-04-04 21:20:33,791 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:33] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:20:33,821 | INFO | 127.0.0.1 - - [04/Apr/2026 21:20:33] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:29:15,351 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 21:29:15,597 | INFO |  * Restarting with stat
+2026-04-04 21:29:18,034 | WARNING |  * Debugger is active!
+2026-04-04 21:29:18,042 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 21:29:26,039 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:26] "GET / HTTP/1.1" 200 -
+2026-04-04 21:29:26,240 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:26] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:29:26,240 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:26] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:29:28,053 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:28] "GET /dataset/operation HTTP/1.1" 200 -
+2026-04-04 21:29:28,067 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:29:28,072 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:28] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:29:30,733 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:30] "GET /dataset/upload?operation=regression HTTP/1.1" 200 -
+2026-04-04 21:29:30,754 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:30] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:29:30,755 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:30] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:29:39,327 | INFO | RUN_ID=f39e1d4b | Pipeline started
+2026-04-04 21:29:39,327 | INFO | RUN_ID=f39e1d4b | Loading dataset
+2026-04-04 21:29:39,683 | INFO | RUN_ID=f39e1d4b | Uploading raw dataset to S3
+2026-04-04 21:29:39,683 | INFO | Uploading data/raw\retail_store_inventory.csv to S3 -> raw-data/retail_store_inventory.csv
+2026-04-04 21:29:43,005 | INFO | S3 upload successful: raw-data/retail_store_inventory.csv
+2026-04-04 21:29:43,005 | INFO | RUN_ID=f39e1d4b | Cleaning dataset
+2026-04-04 21:29:43,206 | INFO | RUN_ID=f39e1d4b | Running data validation
+2026-04-04 21:29:43,206 | INFO | RUN_ID=f39e1d4b | Handling outliers
+2026-04-04 21:29:43,230 | INFO | RUN_ID=f39e1d4b | Creating features
+2026-04-04 21:29:43,281 | INFO | RUN_ID=f39e1d4b | Generating analytics
+2026-04-04 21:29:43,307 | INFO | RUN_ID=f39e1d4b | Saving processed dataset
+2026-04-04 21:29:43,739 | INFO | RUN_ID=f39e1d4b | Analytics JSON saved
+2026-04-04 21:29:43,739 | INFO | RUN_ID=f39e1d4b | Uploading processed dataset to S3
+2026-04-04 21:29:43,739 | INFO | Uploading data/processed\retail_store_inventory.csv to S3 -> processed-data/retail_store_inventory.csv
+2026-04-04 21:29:44,589 | INFO | S3 upload successful: processed-data/retail_store_inventory.csv
+2026-04-04 21:29:44,589 | INFO | RUN_ID=f39e1d4b | Pipeline completed successfully
+2026-04-04 21:29:44,606 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:44] "[32mPOST /dataset/upload?operation=regression HTTP/1.1[0m" 302 -
+2026-04-04 21:29:44,650 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:44] "GET /analysis/processing/80d44131-60c7-47f6-829b-750bd575884a HTTP/1.1" 200 -
+2026-04-04 21:29:44,703 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:44] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:29:44,705 | INFO | 127.0.0.1 - - [04/Apr/2026 21:29:44] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:30:58,744 | INFO | 127.0.0.1 - - [04/Apr/2026 21:30:58] "GET /analysis/results/80d44131-60c7-47f6-829b-750bd575884a HTTP/1.1" 200 -
+2026-04-04 21:30:58,772 | INFO | 127.0.0.1 - - [04/Apr/2026 21:30:58] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:30:58,776 | INFO | 127.0.0.1 - - [04/Apr/2026 21:30:58] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:35:30,123 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:30] "GET /analysis/dashboard/80d44131-60c7-47f6-829b-750bd575884a HTTP/1.1" 200 -
+2026-04-04 21:35:30,141 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:30] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:35:30,144 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:30] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:35:36,275 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:36] "GET /analysis/report/80d44131-60c7-47f6-829b-750bd575884a HTTP/1.1" 200 -
+2026-04-04 21:35:36,297 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:36] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:35:36,297 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:36] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:35:43,346 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:43] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 21:35:43,369 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:43] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:35:43,381 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:43] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 21:35:45,671 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:45] "GET /analysis/results/80d44131-60c7-47f6-829b-750bd575884a HTTP/1.1" 200 -
+2026-04-04 21:35:45,699 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:45] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 21:35:45,699 | INFO | 127.0.0.1 - - [04/Apr/2026 21:35:45] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:42:12,121 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 22:42:12,644 | INFO |  * Restarting with stat
+2026-04-04 22:42:15,616 | WARNING |  * Debugger is active!
+2026-04-04 22:42:15,632 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 22:44:00,347 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 22:44:00,615 | INFO |  * Restarting with stat
+2026-04-04 22:44:03,545 | WARNING |  * Debugger is active!
+2026-04-04 22:44:03,551 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 22:49:09,405 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:09] "[33mGET /analysis/dashboard/80d44131-60c7-47f6-829b-750bd575884a HTTP/1.1[0m" 404 -
+2026-04-04 22:49:17,748 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:17] "GET /user HTTP/1.1" 200 -
+2026-04-04 22:49:18,182 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:18] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:49:18,184 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:18] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:49:20,333 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:20] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 22:49:20,341 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:20] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:49:20,378 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:20] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:49:22,232 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:22] "GET /user HTTP/1.1" 200 -
+2026-04-04 22:49:22,251 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:22] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:49:22,267 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:22] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:49:26,503 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:26] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 22:49:26,530 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:26] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:49:26,552 | INFO | 127.0.0.1 - - [04/Apr/2026 22:49:26] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:54:08,928 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:08] "GET /dataset/operation HTTP/1.1" 200 -
+2026-04-04 22:54:08,945 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:08] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:54:08,954 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:54:10,600 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:10] "GET /dataset/upload?operation=regression HTTP/1.1" 200 -
+2026-04-04 22:54:10,630 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:10] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:54:10,632 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:10] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:54:33,357 | INFO | RUN_ID=8e569e8c | Pipeline started
+2026-04-04 22:54:33,357 | INFO | RUN_ID=8e569e8c | Loading dataset
+2026-04-04 22:54:33,695 | INFO | RUN_ID=8e569e8c | Uploading raw dataset to S3
+2026-04-04 22:54:33,695 | INFO | Uploading data/raw\retail_store_inventory.csv to S3 -> raw-data/retail_store_inventory.csv
+2026-04-04 22:54:36,924 | INFO | S3 upload successful: raw-data/retail_store_inventory.csv
+2026-04-04 22:54:36,924 | INFO | RUN_ID=8e569e8c | Cleaning dataset
+2026-04-04 22:54:37,137 | INFO | RUN_ID=8e569e8c | Running data validation
+2026-04-04 22:54:37,140 | INFO | RUN_ID=8e569e8c | Handling outliers
+2026-04-04 22:54:37,158 | INFO | RUN_ID=8e569e8c | Creating features
+2026-04-04 22:54:37,307 | INFO | RUN_ID=8e569e8c | Generating analytics
+2026-04-04 22:54:37,328 | INFO | RUN_ID=8e569e8c | Saving processed dataset
+2026-04-04 22:54:37,959 | INFO | RUN_ID=8e569e8c | Analytics JSON saved
+2026-04-04 22:54:37,959 | INFO | RUN_ID=8e569e8c | Uploading processed dataset to S3
+2026-04-04 22:54:37,959 | INFO | Uploading data/processed\retail_store_inventory_analytics.json to S3 -> processed-data/retail_store_inventory_analytics.json
+2026-04-04 22:54:38,043 | INFO | S3 upload successful: processed-data/retail_store_inventory_analytics.json
+2026-04-04 22:54:38,043 | INFO | RUN_ID=8e569e8c | Pipeline completed successfully
+2026-04-04 22:54:38,053 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:38] "[32mPOST /dataset/upload?operation=regression HTTP/1.1[0m" 302 -
+2026-04-04 22:54:38,110 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:38] "GET /analysis/processing/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:54:38,145 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:38] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:54:38,238 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:38] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:54:44,980 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:44] "GET /analysis/results/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:54:45,023 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:45] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:54:45,030 | INFO | 127.0.0.1 - - [04/Apr/2026 22:54:45] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:07,703 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:07] "GET /analysis/dashboard/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:55:07,728 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:07] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:07,730 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:07] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:10,261 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:10] "GET /analysis/report/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:55:10,289 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:10] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:10,294 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:10] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:14,261 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:14] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 22:55:14,295 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:14] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:14,302 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:14] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:24,721 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:24] "GET /analysis/results/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:55:24,744 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:24,747 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:29,660 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:29] "GET /analysis/dashboard/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:55:29,697 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:29] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:29,703 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:29] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:35,824 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:35] "GET /analysis/report/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:55:35,851 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:35] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:35,865 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:35] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:38,751 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:38] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 22:55:38,780 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:38] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:38,782 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:38] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:43,075 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:43] "GET /analysis/report/ac885d1d-7c9b-4d7c-9729-212745b5a7a8 HTTP/1.1" 200 -
+2026-04-04 22:55:43,100 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:43] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:43,101 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:43] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 22:55:48,317 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:48] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 22:55:48,352 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:48] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 22:55:48,354 | INFO | 127.0.0.1 - - [04/Apr/2026 22:55:48] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:04:05,543 | INFO |  * Detected change in 'E:\\MCA\\aws AI pipeline for Data Analytics\\Data Automation new\\Data Automation\\app\\services\\pipeline\\data_pipeline.py', reloading
+2026-04-04 23:04:05,692 | INFO |  * Restarting with stat
+2026-04-04 23:04:07,365 | WARNING |  * Debugger is active!
+2026-04-04 23:04:07,374 | INFO |  * Debugger PIN: 575-569-703
+2026-04-04 23:04:45,026 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:45] "GET /user HTTP/1.1" 200 -
+2026-04-04 23:04:45,295 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:45] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:04:45,315 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:45] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:04:47,098 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:47] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 23:04:47,112 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:47] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:04:47,116 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:47] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:04:48,670 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:48] "GET /dataset/operation HTTP/1.1" 200 -
+2026-04-04 23:04:48,687 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:48] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:04:48,689 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:48] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:04:50,515 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:50] "GET /dataset/upload?operation=forecasting HTTP/1.1" 200 -
+2026-04-04 23:04:50,528 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:50] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:04:50,528 | INFO | 127.0.0.1 - - [04/Apr/2026 23:04:50] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:04:58,021 | INFO | RUN_ID=d09f5de4 | Pipeline started
+2026-04-04 23:04:58,021 | INFO | RUN_ID=d09f5de4 | Loading dataset
+2026-04-04 23:04:58,393 | INFO | RUN_ID=d09f5de4 | Uploading raw dataset to S3
+2026-04-04 23:04:58,393 | INFO | Uploading data/raw\retail_store_inventory.csv to S3 -> raw-data/retail_store_inventory.csv
+2026-04-04 23:05:01,621 | INFO | S3 upload successful: raw-data/retail_store_inventory.csv
+2026-04-04 23:05:01,621 | INFO | RUN_ID=d09f5de4 | Cleaning dataset
+2026-04-04 23:05:01,826 | INFO | RUN_ID=d09f5de4 | Running data validation
+2026-04-04 23:05:01,826 | INFO | RUN_ID=d09f5de4 | Handling outliers
+2026-04-04 23:05:01,866 | INFO | RUN_ID=d09f5de4 | Creating features
+2026-04-04 23:05:01,927 | INFO | RUN_ID=d09f5de4 | Generating analytics
+2026-04-04 23:05:01,952 | INFO | RUN_ID=d09f5de4 | Saving processed dataset
+2026-04-04 23:05:02,978 | INFO | Uploading data/processed/retail_store_inventory_processed.csv to S3 -> processed-data/retail_store_inventory_processed.csv
+2026-04-04 23:05:03,666 | INFO | S3 upload successful: processed-data/retail_store_inventory_processed.csv
+2026-04-04 23:05:03,666 | INFO | RUN_ID=d09f5de4 | Processed dataset uploaded to S3
+2026-04-04 23:05:03,677 | INFO | RUN_ID=d09f5de4 | Analytics JSON saved
+2026-04-04 23:05:03,677 | INFO | RUN_ID=d09f5de4 | Uploading processed dataset to S3
+2026-04-04 23:05:03,677 | INFO | Uploading data/processed\retail_store_inventory_analytics.json to S3 -> processed-data/retail_store_inventory_analytics.json
+2026-04-04 23:05:03,729 | INFO | S3 upload successful: processed-data/retail_store_inventory_analytics.json
+2026-04-04 23:05:03,729 | INFO | RUN_ID=d09f5de4 | Pipeline completed successfully
+2026-04-04 23:05:03,743 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:03] "[32mPOST /dataset/upload?operation=forecasting HTTP/1.1[0m" 302 -
+2026-04-04 23:05:03,776 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:03] "GET /analysis/processing/23ff682d-4f0d-413a-8cb6-cf64d18e5221 HTTP/1.1" 200 -
+2026-04-04 23:05:03,804 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:03] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:05:03,809 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:03] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:05:06,664 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:06] "GET /analysis/results/23ff682d-4f0d-413a-8cb6-cf64d18e5221 HTTP/1.1" 200 -
+2026-04-04 23:05:06,669 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:06] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:05:06,680 | INFO | 127.0.0.1 - - [04/Apr/2026 23:05:06] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:06:11,514 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:11] "GET /analysis/dashboard/23ff682d-4f0d-413a-8cb6-cf64d18e5221 HTTP/1.1" 200 -
+2026-04-04 23:06:11,530 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:11] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:06:11,535 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:11] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:06:13,309 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:13] "GET /analysis/report/23ff682d-4f0d-413a-8cb6-cf64d18e5221 HTTP/1.1" 200 -
+2026-04-04 23:06:13,323 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:13] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:06:13,329 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:13] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:06:15,226 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:15] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 23:06:15,241 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:15] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:06:15,247 | INFO | 127.0.0.1 - - [04/Apr/2026 23:06:15] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:27:10,635 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:10] "GET /user HTTP/1.1" 200 -
+2026-04-04 23:27:10,651 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:10] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:27:10,663 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:10] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:27:12,899 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:12] "GET /analysis/history HTTP/1.1" 200 -
+2026-04-04 23:27:12,915 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:12] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:27:12,922 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:12] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-04-04 23:27:14,984 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:14] "GET /user HTTP/1.1" 200 -
+2026-04-04 23:27:15,001 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:15] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-04 23:27:15,002 | INFO | 127.0.0.1 - - [04/Apr/2026 23:27:15] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -

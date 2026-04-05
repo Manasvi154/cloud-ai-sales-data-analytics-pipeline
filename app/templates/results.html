@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+{% block title %}Results | Data Automation{% endblock %}
+{% block content %}
+<section class="space-y-6">
+    {{ page_header("Step 4", "Results Summary", job.result.summary) }}
+    {{ pipeline_steps("4") }}
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+        {% for key, value in job.result.metrics.items() %}
+        <article class="metric-card reveal">
+            <p class="metric-label">{{ key.replace('_', ' ').title() }}</p>
+            <p class="metric-value">{{ value }}</p>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4 items-start">
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">GenAI Insights</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for item in job.result.insights %}
+                    <li>- {{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">Recommendations</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for item in job.result.recommendations %}
+                    <li>- {{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+    </div>
+
+    <div class="flex gap-3 flex-wrap">
+        {{ action_button(url_for('analysis.dashboard', job_id=job.job_id), "View Dashboard", "primary") }}
+        {{ action_button(url_for('analysis.report', job_id=job.job_id), "Download Report", "secondary") }}
+    </div>
+</section>
+{% endblock %}
