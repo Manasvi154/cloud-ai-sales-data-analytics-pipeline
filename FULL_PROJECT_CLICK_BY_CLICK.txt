@@ -1,0 +1,558 @@
+AUTOMATED DATA ANALYTICS + ML PLATFORM
+COMPLETE END-TO-END CLICK-BY-CLICK BUILD GUIDE
+
+Version: 1.0
+Project root: c:\Users\kunal\OneDrive\Desktop\Data Automation
+Goal: Fully automated batch pipeline with NO manual runtime steps.
+
+============================================================
+0) WHAT THIS FILE GIVES YOU
+============================================================
+This single file gives you:
+1. Exact AWS Console click paths.
+2. Exact repo files to copy/paste code from.
+3. Exact placeholders to replace.
+4. Exact .env settings for Flask app.
+5. Exact verification checklist for full flow.
+
+Runtime flow after setup:
+User upload -> S3 -> Lambda trigger -> Step Functions ->
+Glue preprocess -> Decision engine -> SageMaker train ->
+LLM insights -> QuickSight refresh -> Flask results/dashboard
+
+============================================================
+1) PRE-FILL THIS VALUES SHEET FIRST
+============================================================
+Create your own values (replace ALL placeholders):
+
+AWS_REGION=ap-south-1
+AWS_ACCOUNT_ID=<12-digit account id>
+PROJECT_PREFIX=da
+ENV_NAME=dev
+
+DATA_BUCKET=<example: data-automation-dev-kunal-001>
+RAW_PREFIX=raw/uploads/
+PROCESSED_PREFIX=processed/glue/
+FEATURE_PREFIX=feature-engineered/
+SUMMARY_PREFIX=processed/summaries/
+MODEL_PREFIX=models/
+CODE_PREFIX=code/artifacts/
+
+JOBS_TABLE=analytics_jobs
+EVENTS_TABLE=analytics_events
+USERS_TABLE=analytics_users
+
+LAMBDA_S3_START=da-s3-start-execution
+LAMBDA_STATUS=da-update-job-status
+LAMBDA_FAILURE=da-handle-failure
+LAMBDA_LOAD_SUMMARY=da-load-glue-summary
+LAMBDA_DECISION=da-decision-engine
+LAMBDA_COLLECT_METRICS=da-collect-training-metrics
+LAMBDA_INSIGHTS=da-generate-insights
+LAMBDA_QUICKSIGHT=da-refresh-quicksight
+LAMBDA_FINALIZE=da-finalize-results
+
+GLUE_JOB_NAME=da-glue-preprocess-dev
+STEP_FUNCTION_NAME=analytics-orchestrator-full-dev
+
+SAGEMAKER_ROLE_NAME=da-sagemaker-execution-role
+SAGEMAKER_IMAGE_URI=<region-specific scikit image uri>
+
+BEDROCK_MODEL_ID=<example: anthropic.claude-3-5-sonnet-20241022-v2:0>
+
+QUICKSIGHT_NAMESPACE=default
+QUICKSIGHT_DATASET_ID=<from QuickSight>
+QUICKSIGHT_DASHBOARD_ID=<from QuickSight>
+QUICKSIGHT_USER_ARN=<from QuickSight Users page>
+QUICKSIGHT_ALLOWED_DOMAINS=http://127.0.0.1:5000
+
+============================================================
+2) SOURCE FILE MAP (COPY CODE FROM HERE)
+============================================================
+Use these exact files as source:
+
+Lambda handlers:
+infra\lambda\functions\s3_start_execution.py
+infra\lambda\functions\update_job_status.py
+infra\lambda\functions\handle_failure.py
+infra\lambda\functions\load_glue_summary.py
+infra\lambda\functions\decision_engine.py
+infra\lambda\functions\collect_training_metrics.py
+infra\lambda\functions\generate_insights.py
+infra\lambda\functions\refresh_quicksight.py
+infra\lambda\functions\finalize_results.py
+
+Glue ETL script:
+infra\glue\jobs\preprocess_dataset.py
+
+SageMaker training script:
+infra\sagemaker\training\train_model.py
+
+Step Functions template:
+infra\stepfunctions\analytics_orchestrator_full.asl.json
+
+IAM policy templates:
+infra\iam\policies\lambda_s3_starter_policy.json
+infra\iam\policies\lambda_pipeline_worker_policy.json
+infra\iam\policies\stepfunctions_execution_policy.json
+infra\iam\policies\glue_job_role_policy.json
+infra\iam\policies\sagemaker_execution_role_policy.json
+
+Helper scripts:
+infra\scripts\package_and_upload_artifacts.ps1
+infra\scripts\render_stepfunction_definition.ps1
+infra\config\full_stack_values.example.json
+
+============================================================
+3) S3 SETUP (CLICK-BY-CLICK)
+============================================================
+3.1 Create bucket
+1. AWS Console -> S3 -> Create bucket
+2. Bucket name -> DATA_BUCKET
+3. Region -> AWS_REGION
+4. Keep "Block all public access" ON
+5. Enable bucket versioning
+6. Click Create bucket
+
+3.2 Create prefixes
+1. Open bucket
+2. Click Create folder
+3. Create:
+   raw/uploads/
+   processed/glue/
+   processed/summaries/
+   feature-engineered/
+   models/
+   code/artifacts/lambda/
+   code/artifacts/sagemaker/
+   athena/results/
+   reports/generated/
+
+3.3 Add lifecycle rules (recommended)
+1. Bucket -> Management -> Lifecycle rules -> Create rule
+2. Rule 1: raw/uploads/ -> transition to Standard-IA after 30 days
+3. Rule 2: processed/ + feature-engineered/ -> transition after 30 days
+4. Rule 3: reports/generated/ -> expire after 180 days
+
+============================================================
+4) DYNAMODB SETUP (CLICK-BY-CLICK)
+============================================================
+4.1 Table analytics_jobs
+1. DynamoDB -> Tables -> Create table
+2. Table name -> JOBS_TABLE
+3. Partition key -> job_id (String)
+4. Capacity mode -> On-demand
+5. Create table
+
+4.2 Add GSIs for jobs table
+1. Open JOBS_TABLE -> Indexes -> Create index
+2. Index A:
+   PK=user_id (String), SK=created_at (String), Name=gsi_user_created_at
+3. Index B:
+   PK=status (String), SK=updated_at (String), Name=gsi_status_updated_at
+
+4.3 Table analytics_events
+1. DynamoDB -> Tables -> Create table
+2. Table name -> EVENTS_TABLE
+3. Partition key -> job_id (String)
+4. Sort key -> event_ts (String)
+5. Capacity mode -> On-demand
+6. Create table
+
+============================================================
+5) IAM SETUP (ROLES + POLICIES)
+============================================================
+IMPORTANT:
+In each policy file, replace placeholders:
+REPLACE_REGION, REPLACE_ACCOUNT_ID, REPLACE_DATA_BUCKET, REPLACE_STEP_FUNCTION_ARN, etc.
+
+5.1 Create Lambda role for S3 starter
+1. IAM -> Roles -> Create role
+2. Trusted entity -> AWS service -> Lambda
+3. Role name -> da-lambda-s3-starter-role
+4. Attach policy:
+   - AWSLambdaBasicExecutionRole (managed)
+5. Add inline policy:
+   - Open infra\iam\policies\lambda_s3_starter_policy.json
+   - Replace placeholders
+   - Paste in inline policy editor JSON tab
+
+5.2 Create Lambda role for pipeline worker lambdas
+1. Create role -> Lambda
+2. Role name -> da-lambda-pipeline-worker-role
+3. Attach AWSLambdaBasicExecutionRole
+4. Add inline policy from:
+   infra\iam\policies\lambda_pipeline_worker_policy.json
+   (after replacing placeholders)
+
+5.3 Create Step Functions role
+1. IAM -> Roles -> Create role
+2. Trusted entity -> AWS service -> Step Functions
+3. Role name -> da-stepfunctions-role
+4. Add inline policy from:
+   infra\iam\policies\stepfunctions_execution_policy.json
+   (replace placeholders)
+
+5.4 Create Glue role
+1. IAM -> Roles -> Create role
+2. Trusted entity -> AWS service -> Glue
+3. Role name -> da-glue-job-role
+4. Add managed policy: service-role/AWSGlueServiceRole
+5. Add inline policy from:
+   infra\iam\policies\glue_job_role_policy.json
+
+5.5 Create SageMaker role
+1. IAM -> Roles -> Create role
+2. Trusted entity -> AWS service -> SageMaker
+3. Role name -> SAGEMAKER_ROLE_NAME
+4. Add inline policy from:
+   infra\iam\policies\sagemaker_execution_role_policy.json
+
+============================================================
+6) PACKAGE AND UPLOAD CODE ARTIFACTS
+============================================================
+Run from project root:
+
+powershell -ExecutionPolicy Bypass -File infra\scripts\package_and_upload_artifacts.ps1 -BucketName DATA_BUCKET -Region AWS_REGION
+
+This uploads:
+1. All Lambda zip artifacts to:
+   s3://DATA_BUCKET/code/artifacts/lambda/
+2. SageMaker training source tar.gz to:
+   s3://DATA_BUCKET/code/artifacts/sagemaker/train_model.tar.gz
+
+============================================================
+7) CREATE LAMBDA FUNCTIONS (EXACT STEPS)
+============================================================
+You will create 9 Lambda functions.
+Runtime for all: Python 3.12
+Architecture: x86_64
+Timeout:
+- s3_start_execution -> 60 sec
+- others -> 30 sec
+Memory:
+- default 256 MB (can increase later)
+
+For each function:
+1. Lambda -> Create function -> Author from scratch
+2. Name = function name below
+3. Runtime Python 3.12
+4. Execution role = existing role (as instructed)
+5. Create function
+6. Code tab -> Upload from -> .zip file
+   Use zip from s3://DATA_BUCKET/code/artifacts/lambda/<name>.zip
+   OR local zip in infra\build\ after packaging script
+7. Configuration -> Environment variables -> add required vars
+8. Deploy
+
+7.1 da-s3-start-execution
+Role: da-lambda-s3-starter-role
+Source: infra\lambda\functions\s3_start_execution.py
+Env vars:
+JOBS_TABLE_NAME=JOBS_TABLE
+EVENTS_TABLE_NAME=EVENTS_TABLE
+STATE_MACHINE_ARN=<step function arn, fill after step function creation>
+RAW_UPLOAD_PREFIX=raw/uploads/
+
+Trigger:
+1. Add trigger -> S3
+2. Bucket = DATA_BUCKET
+3. Event types = All object create events
+4. Prefix = raw/uploads/
+5. Enable trigger
+
+7.2 da-update-job-status
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\update_job_status.py
+Env vars:
+JOBS_TABLE_NAME=JOBS_TABLE
+EVENTS_TABLE_NAME=EVENTS_TABLE
+
+7.3 da-handle-failure
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\handle_failure.py
+Env vars:
+JOBS_TABLE_NAME=JOBS_TABLE
+EVENTS_TABLE_NAME=EVENTS_TABLE
+
+7.4 da-load-glue-summary
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\load_glue_summary.py
+Env vars:
+PROCESSED_BUCKET=DATA_BUCKET
+GLUE_SUMMARY_PREFIX=processed/summaries
+
+7.5 da-decision-engine
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\decision_engine.py
+Env vars:
+BEDROCK_MODEL_ID=BEDROCK_MODEL_ID
+
+7.6 da-collect-training-metrics
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\collect_training_metrics.py
+Env vars:
+METRICS_FILE_NAME=evaluation.json
+
+7.7 da-generate-insights
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\generate_insights.py
+Env vars:
+BEDROCK_MODEL_ID=BEDROCK_MODEL_ID
+
+7.8 da-refresh-quicksight
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\refresh_quicksight.py
+Env vars:
+QUICKSIGHT_AWS_ACCOUNT_ID=AWS_ACCOUNT_ID
+QUICKSIGHT_DATASET_ID=QUICKSIGHT_DATASET_ID
+QUICKSIGHT_DASHBOARD_ID=QUICKSIGHT_DASHBOARD_ID
+QUICKSIGHT_NAMESPACE=QUICKSIGHT_NAMESPACE
+QUICKSIGHT_USER_ARN=QUICKSIGHT_USER_ARN
+QUICKSIGHT_ALLOWED_DOMAINS=QUICKSIGHT_ALLOWED_DOMAINS
+
+7.9 da-finalize-results
+Role: da-lambda-pipeline-worker-role
+Source: infra\lambda\functions\finalize_results.py
+Env vars:
+JOBS_TABLE_NAME=JOBS_TABLE
+EVENTS_TABLE_NAME=EVENTS_TABLE
+
+============================================================
+8) GLUE JOB SETUP
+============================================================
+8.1 Upload Glue script to S3
+1. S3 -> DATA_BUCKET -> code/artifacts/
+2. Upload file:
+   infra\glue\jobs\preprocess_dataset.py
+3. Final path example:
+   s3://DATA_BUCKET/code/artifacts/glue/preprocess_dataset.py
+
+8.2 Create Glue job
+1. AWS Console -> Glue -> ETL jobs -> Create job
+2. Name = GLUE_JOB_NAME
+3. IAM role = da-glue-job-role
+4. Type = Spark
+5. Glue version = latest (4.0/5.0 available)
+6. Script path = uploaded S3 path
+7. Worker type = G.1X
+8. Number of workers = 2 (start small)
+9. Job bookmark = Disable (for batch simplicity)
+10. Save
+
+8.3 (Optional) Glue crawler for Athena
+1. Glue -> Crawlers -> Create crawler
+2. Data source: s3://DATA_BUCKET/processed/glue/
+3. IAM role: da-glue-job-role
+4. Database: analytics_raw
+5. Run on demand
+
+============================================================
+9) SAGEMAKER PREP
+============================================================
+9.1 Training script source
+Use: infra\sagemaker\training\train_model.py
+This is already packaged by package_and_upload_artifacts.ps1.
+
+9.2 Confirm script tar location
+Use this URI for Step Functions placeholder:
+s3://DATA_BUCKET/code/artifacts/sagemaker/train_model.tar.gz
+
+9.3 Choose scikit image URI
+Use region-compatible SageMaker scikit image URI.
+Update placeholder:
+REPLACE_SAGEMAKER_SKLEARN_IMAGE_URI
+
+9.4 Ensure SageMaker role exists
+Role ARN needed in Step Functions:
+REPLACE_SAGEMAKER_EXECUTION_ROLE_ARN
+
+============================================================
+10) QUICKSIGHT SETUP
+============================================================
+10.1 Activate QuickSight in account (if not active)
+
+10.2 Create Athena data source
+1. QuickSight -> Datasets -> New dataset -> Athena
+2. Connect to database (analytics_raw or curated DB)
+
+10.3 Create dataset + analysis + dashboard
+1. Build dashboard with:
+   - data distribution visuals
+   - model metric cards
+   - trend visual
+2. Publish dashboard
+
+10.4 Collect IDs for Lambda env
+1. Dashboard ID
+2. Dataset ID
+3. QuickSight user ARN
+
+============================================================
+11) STEP FUNCTIONS SETUP (FULL ORCHESTRATOR)
+============================================================
+11.1 Prepare values file
+1. Copy:
+   infra\config\full_stack_values.example.json
+   to
+   infra\config\full_stack_values.json
+2. Replace every value with your real ARNs/names.
+
+11.2 Render final ASL file
+Run:
+powershell -ExecutionPolicy Bypass -File infra\scripts\render_stepfunction_definition.ps1
+
+Output generated:
+infra\stepfunctions\analytics_orchestrator_full.rendered.asl.json
+
+11.3 Create state machine
+1. Step Functions -> Create state machine
+2. Type = Standard
+3. Authoring method = Write your workflow in code
+4. Paste content of rendered ASL JSON
+5. Name = STEP_FUNCTION_NAME
+6. Execution role = Use existing role
+7. Select role: da-stepfunctions-role
+8. Create state machine
+
+11.4 Backfill S3 starter Lambda env
+Go to function da-s3-start-execution:
+Set STATE_MACHINE_ARN=<new state machine arn>
+Deploy
+
+============================================================
+12) ATHENA SETUP
+============================================================
+12.1 Create database
+Athena query editor:
+CREATE DATABASE IF NOT EXISTS analytics_raw;
+
+12.2 Set output location
+Athena -> Settings -> Manage -> Query result location:
+s3://DATA_BUCKET/athena/results/
+
+12.3 Optional test queries
+Use templates from:
+infra\athena\query_templates.sql
+
+============================================================
+13) FLASK APP INTEGRATION (.ENV)
+============================================================
+Edit .env in project root:
+
+SECRET_KEY=<your-random-secret>
+AWS_REGION=AWS_REGION
+S3_BUCKET_DATASETS=DATA_BUCKET
+S3_RAW_UPLOAD_PREFIX=raw/uploads
+S3_PROCESSED_PREFIX=processed/glue
+DYNAMODB_TABLE_JOBS=JOBS_TABLE
+DYNAMODB_TABLE_EVENTS=EVENTS_TABLE
+STEP_FUNCTION_ARN=<state machine arn>
+LAMBDA_TRIGGER_NAME=LAMBDA_S3_START
+PIPELINE_MODE=aws
+PIPELINE_START_MODE=s3_event
+PIPELINE_JOBS_USER_GSI=gsi_user_created_at
+PIPELINE_STATUS_POLL_SECONDS=3
+PIPELINE_ALLOW_STUB_FALLBACK=true
+POST_UPLOAD_PAGES_ENABLED=true
+
+Then restart app:
+python run.py
+
+============================================================
+14) END-TO-END VALIDATION (MANDATORY)
+============================================================
+14.1 Upload test
+1. Login to app
+2. Upload CSV from /dataset/upload
+3. Select operation + description
+
+Expected:
+1. File appears in s3://DATA_BUCKET/raw/uploads/<job_id>/
+2. Lambda da-s3-start-execution invoked
+3. Step Functions execution starts
+4. Glue job runs and writes summary JSON:
+   s3://DATA_BUCKET/processed/summaries/<job_id>.json
+5. SageMaker training completes
+6. Lambda finalize updates DynamoDB job result
+7. UI processing page auto-refreshes status
+8. Results page shows metrics + insights
+9. Dashboard page shows QuickSight embed (if configured)
+
+14.2 DynamoDB checks
+In JOBS_TABLE record:
+status should move to SUCCEEDED
+result map should include summary/metrics/insights/recommendations
+
+In EVENTS_TABLE:
+timeline events should exist for each stage.
+
+14.3 CloudWatch checks
+Check logs for each Lambda and Step Functions.
+
+============================================================
+15) PRODUCTION HARDENING CHECKLIST
+============================================================
+1. Replace broad IAM policies with least-privilege custom policies.
+2. Enable KMS encryption for S3, DynamoDB, CloudWatch logs.
+3. Add Step Functions retries for transient errors.
+4. Add DLQ for Lambdas.
+5. Add CloudWatch alarms:
+   - StepFunctionsFailedExecutions > 0
+   - LambdaErrors > 0
+   - Glue job failures > 0
+6. Use Secrets Manager for sensitive keys.
+7. Add lifecycle + retention policies.
+8. Add cost controls:
+   - Glue worker sizing
+   - SageMaker spot training where possible
+   - S3 lifecycle to IA/Glacier
+
+============================================================
+16) TROUBLESHOOTING FAST PATH
+============================================================
+Issue: Upload works but Step Function never starts
+Check:
+1. S3 trigger prefix exactly raw/uploads/
+2. Lambda env STATE_MACHINE_ARN set correctly
+3. Lambda role has states:StartExecution
+
+Issue: Step Function fails at Glue
+Check:
+1. Glue job name in ASL matches actual job
+2. Glue role has read/write bucket access
+3. Glue script path valid
+
+Issue: SageMaker training fails
+Check:
+1. training_code_s3_uri points to train_model.tar.gz
+2. image URI valid for region
+3. sagemaker role has S3 read/write
+
+Issue: Insights empty
+Check:
+1. BEDROCK_MODEL_ID set and access granted
+2. Lambda role includes bedrock:InvokeModel / bedrock:Converse
+3. fallback insights still appear even if model call fails
+
+Issue: Dashboard iframe blank
+Check:
+1. quicksight lambda env values are correct
+2. allowed domain includes http://127.0.0.1:5000
+3. quicksight user arn/dataset/dashboard id are correct
+
+============================================================
+17) WHAT TO SEND ME NEXT
+============================================================
+Send these values and I will generate ready-to-run final replacements for you:
+1. AWS_REGION
+2. AWS_ACCOUNT_ID
+3. DATA_BUCKET
+4. All Lambda ARNs
+5. GLUE_JOB_NAME
+6. SAGEMAKER_ROLE_ARN
+7. STEP_FUNCTION_ARN
+8. QUICKSIGHT_DATASET_ID, QUICKSIGHT_DASHBOARD_ID, QUICKSIGHT_USER_ARN
+9. BEDROCK_MODEL_ID
+
+After you send those, I will give you a fully filled final config block with no placeholders.

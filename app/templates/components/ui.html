@@ -1,0 +1,54 @@
+{% macro page_header(step_label="", title="", subtitle="") -%}
+<header class="page-header reveal">
+    {% if step_label %}
+    <p class="eyebrow">{{ step_label }}</p>
+    {% endif %}
+    <h1 class="title-xl">{{ title }}</h1>
+    {% if subtitle %}
+    <p class="title-sub">{{ subtitle }}</p>
+    {% endif %}
+</header>
+{%- endmacro %}
+
+{% macro status_badge(status) -%}
+{% set normalized = (status or "UNKNOWN")|upper %}
+{% if normalized == "SUCCEEDED" %}
+<span class="status-badge success">{{ normalized }}</span>
+{% elif normalized == "FAILED" %}
+<span class="status-badge failed">{{ normalized }}</span>
+{% else %}
+<span class="status-badge running">{{ normalized }}</span>
+{% endif %}
+{%- endmacro %}
+
+{% macro action_button(href, label, variant="primary") -%}
+<a href="{{ href }}" class="btn-{{ variant }}">{{ label }}</a>
+{%- endmacro %}
+
+{% macro metric_card(label, value) -%}
+<article class="metric-card reveal">
+    <p class="metric-label">{{ label }}</p>
+    <p class="metric-value">{{ value }}</p>
+</article>
+{%- endmacro %}
+
+{% macro pipeline_steps(active_step) -%}
+{% set steps = [
+    ("1", "Operation"),
+    ("2", "Upload"),
+    ("3", "Processing"),
+    ("4", "Results"),
+    ("5", "Dashboard"),
+    ("6", "Report")
+] %}
+<section class="step-track reveal" aria-label="Pipeline progress">
+    {% for step_num, step_name in steps %}
+    {% set is_active = step_num == active_step %}
+    {% set is_done = step_num|int < active_step|int %}
+    <div class="step-item {% if is_active %}active{% elif is_done %}done{% endif %}">
+        <span class="step-dot">{{ step_num }}</span>
+        <span class="step-label">{{ step_name }}</span>
+    </div>
+    {% endfor %}
+</section>
+{%- endmacro %}

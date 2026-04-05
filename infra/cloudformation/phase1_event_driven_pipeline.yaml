@@ -1,0 +1,502 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Data Automation Phase 1 foundation (S3 upload -> Lambda trigger -> Step Functions start)
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: dev
+    Description: Lowercase environment label used in resource names.
+  RawUploadPrefix:
+    Type: String
+    Default: raw/uploads/
+    Description: Prefix for user uploads that should trigger orchestration.
+  JobsTableName:
+    Type: String
+    Default: analytics_jobs
+  EventsTableName:
+    Type: String
+    Default: analytics_events
+  StepFunctionName:
+    Type: String
+    Default: analytics-orchestrator-phase1
+
+Resources:
+  DataBucket:
+    Type: AWS::S3::Bucket
+    DependsOn:
+      - S3InvokePermission
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt S3IngestionLambda.Arn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: !Ref RawUploadPrefix
+
+  JobsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref JobsTableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: job_id
+          AttributeType: S
+        - AttributeName: user_id
+          AttributeType: S
+        - AttributeName: created_at
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: updated_at
+          AttributeType: S
+      KeySchema:
+        - AttributeName: job_id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: gsi_user_created_at
+          KeySchema:
+            - AttributeName: user_id
+              KeyType: HASH
+            - AttributeName: created_at
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: gsi_status_updated_at
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: updated_at
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+  EventsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref EventsTableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: job_id
+          AttributeType: S
+        - AttributeName: event_ts
+          AttributeType: S
+      KeySchema:
+        - AttributeName: job_id
+          KeyType: HASH
+        - AttributeName: event_ts
+          KeyType: RANGE
+
+  StatusUpdaterLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub da-phase1-status-updater-role-${EnvironmentName}-${AWS::Region}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: status-updater-logs-ddb
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - dynamodb:UpdateItem
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                Resource:
+                  - !GetAtt JobsTable.Arn
+                  - !GetAtt EventsTable.Arn
+
+  S3IngestionLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub da-phase1-s3-trigger-role-${EnvironmentName}-${AWS::Region}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: s3-trigger-logs-ddb-sf
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: "arn:aws:s3:::*"
+              - Effect: Allow
+                Action:
+                  - dynamodb:UpdateItem
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                Resource:
+                  - !GetAtt JobsTable.Arn
+                  - !GetAtt EventsTable.Arn
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource: !Ref PhaseOneStateMachine
+
+  StatusUpdaterLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub da-phase1-status-updater-${EnvironmentName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: !GetAtt StatusUpdaterLambdaRole.Arn
+      Environment:
+        Variables:
+          JOBS_TABLE_NAME: !Ref JobsTable
+          EVENTS_TABLE_NAME: !Ref EventsTable
+      Code:
+        ZipFile: |
+          import datetime
+          import os
+          import boto3
+
+          dynamodb = boto3.resource("dynamodb")
+          jobs_table = dynamodb.Table(os.environ["JOBS_TABLE_NAME"])
+          events_table = dynamodb.Table(os.environ["EVENTS_TABLE_NAME"])
+
+          def now_iso():
+              return datetime.datetime.now(datetime.UTC).isoformat()
+
+          def handler(event, context):
+              job_id = event.get("job_id")
+              if not job_id:
+                  raise ValueError("job_id is required")
+              status = str(event.get("status", "RUNNING")).upper()
+              stage = event.get("stage", "UNKNOWN_STAGE")
+              message = event.get("message", f"Job moved to {stage}.")
+              ts = now_iso()
+
+              jobs_table.update_item(
+                  Key={"job_id": job_id},
+                  UpdateExpression="SET #status=:status, #stage=:stage, #updated_at=:updated_at, #latest_message=:latest_message",
+                  ExpressionAttributeNames={
+                      "#status": "status",
+                      "#stage": "stage",
+                      "#updated_at": "updated_at",
+                      "#latest_message": "latest_message",
+                  },
+                  ExpressionAttributeValues={
+                      ":status": status,
+                      ":stage": stage,
+                      ":updated_at": ts,
+                      ":latest_message": message,
+                  },
+              )
+
+              events_table.put_item(
+                  Item={
+                      "job_id": job_id,
+                      "event_ts": ts,
+                      "status": status,
+                      "stage": stage,
+                      "message": message,
+                  }
+              )
+              return {
+                  "job_id": job_id,
+                  "status": status,
+                  "stage": stage,
+                  "message": message,
+                  "updated_at": ts,
+              }
+
+  PhaseOneStateMachineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub da-phase1-state-machine-role-${EnvironmentName}-${AWS::Region}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: stepfunctions-invoke-status-lambda
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource: !GetAtt StatusUpdaterLambda.Arn
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogDelivery
+                  - logs:GetLogDelivery
+                  - logs:UpdateLogDelivery
+                  - logs:DeleteLogDelivery
+                  - logs:ListLogDeliveries
+                  - logs:PutResourcePolicy
+                  - logs:DescribeResourcePolicies
+                  - logs:DescribeLogGroups
+                Resource: "*"
+
+  PhaseOneStateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: !Sub ${StepFunctionName}-${EnvironmentName}
+      RoleArn: !GetAtt PhaseOneStateMachineRole.Arn
+      DefinitionString: !Sub |
+        {
+          "Comment": "Data Automation Phase 1 orchestration",
+          "StartAt": "MarkRunning",
+          "States": {
+            "MarkRunning": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${StatusUpdaterLambda.Arn}",
+                "Payload": {
+                  "job_id.$": "$.job_id",
+                  "status": "RUNNING",
+                  "stage": "STEP_FUNCTIONS_RUNNING",
+                  "message": "Step Functions execution started."
+                }
+              },
+              "ResultPath": "$.running_update",
+              "Next": "MarkSucceeded",
+              "Catch": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "ResultPath": "$.error",
+                  "Next": "MarkFailed"
+                }
+              ]
+            },
+            "MarkSucceeded": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${StatusUpdaterLambda.Arn}",
+                "Payload": {
+                  "job_id.$": "$.job_id",
+                  "status": "SUCCEEDED",
+                  "stage": "PHASE_1_COMPLETED",
+                  "message": "Phase 1 completed: S3 event + Lambda + Step Functions is active."
+                }
+              },
+              "ResultPath": "$.success_update",
+              "Next": "Done",
+              "Catch": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "ResultPath": "$.error",
+                  "Next": "MarkFailed"
+                }
+              ]
+            },
+            "MarkFailed": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "${StatusUpdaterLambda.Arn}",
+                "Payload": {
+                  "job_id.$": "$.job_id",
+                  "status": "FAILED",
+                  "stage": "PHASE_1_FAILED",
+                  "message": "Phase 1 execution failed."
+                }
+              },
+              "End": true
+            },
+            "Done": {
+              "Type": "Succeed"
+            }
+          }
+        }
+
+  S3IngestionLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub da-phase1-s3-starter-${EnvironmentName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: !GetAtt S3IngestionLambdaRole.Arn
+      Environment:
+        Variables:
+          JOBS_TABLE_NAME: !Ref JobsTable
+          EVENTS_TABLE_NAME: !Ref EventsTable
+          STATE_MACHINE_ARN: !Ref PhaseOneStateMachine
+          RAW_UPLOAD_PREFIX: !Ref RawUploadPrefix
+      Code:
+        ZipFile: |
+          import datetime
+          import json
+          import os
+          import time
+          import urllib.parse
+          import boto3
+
+          s3 = boto3.client("s3")
+          sfn = boto3.client("stepfunctions")
+          dynamodb = boto3.resource("dynamodb")
+          jobs_table = dynamodb.Table(os.environ["JOBS_TABLE_NAME"])
+          events_table = dynamodb.Table(os.environ["EVENTS_TABLE_NAME"])
+          state_machine_arn = os.environ["STATE_MACHINE_ARN"]
+          raw_prefix = os.environ.get("RAW_UPLOAD_PREFIX", "raw/uploads/")
+
+          def now_iso():
+              return datetime.datetime.now(datetime.UTC).isoformat()
+
+          def put_event(job_id, status, stage, message):
+              events_table.put_item(
+                  Item={
+                      "job_id": job_id,
+                      "event_ts": now_iso(),
+                      "status": status,
+                      "stage": stage,
+                      "message": message,
+                  }
+              )
+
+          def parse_job_id(key):
+              parts = key.split("/")
+              try:
+                  prefix_parts = [p for p in raw_prefix.split("/") if p]
+                  return parts[len(prefix_parts)]
+              except Exception:
+                  return ""
+
+          def handler(event, context):
+              records = event.get("Records", [])
+              processed = []
+              for record in records:
+                  if record.get("eventSource") != "aws:s3":
+                      continue
+
+                  bucket = record["s3"]["bucket"]["name"]
+                  key = urllib.parse.unquote_plus(record["s3"]["object"]["key"])
+                  if raw_prefix and not key.startswith(raw_prefix):
+                      continue
+
+                  head = s3.head_object(Bucket=bucket, Key=key)
+                  metadata = head.get("Metadata", {})
+                  filename = metadata.get("original-filename", key.split("/")[-1])
+                  operation = metadata.get("operation", "auto")
+                  description = metadata.get("description", "")
+                  user_id = metadata.get("user-id", "unknown-user")
+                  job_id = metadata.get("job-id", parse_job_id(key)) or context.aws_request_id
+                  ts = now_iso()
+
+                  jobs_table.update_item(
+                      Key={"job_id": job_id},
+                      UpdateExpression="SET #status=:status, #stage=:stage, #updated_at=:updated_at, s3_input_bucket=:bucket, s3_input_key=:s3_key, filename=:filename, operation=:operation, description=:description, user_id=:user_id",
+                      ExpressionAttributeNames={
+                          "#status": "status",
+                          "#stage": "stage",
+                          "#updated_at": "updated_at",
+                      },
+                      ExpressionAttributeValues={
+                          ":status": "RUNNING",
+                          ":stage": "LAMBDA_TRIGGERED",
+                          ":updated_at": ts,
+                          ":bucket": bucket,
+                          ":s3_key": key,
+                          ":filename": filename,
+                          ":operation": operation,
+                          ":description": description,
+                          ":user_id": user_id,
+                      },
+                  )
+                  put_event(job_id, "RUNNING", "LAMBDA_TRIGGERED", "S3 event received by Lambda.")
+
+                  execution_input = {
+                      "job_id": job_id,
+                      "user_id": user_id,
+                      "filename": filename,
+                      "operation": operation,
+                      "description": description,
+                      "s3_input_bucket": bucket,
+                      "s3_input_key": key,
+                      "created_at": ts,
+                  }
+                  execution = sfn.start_execution(
+                      stateMachineArn=state_machine_arn,
+                      name=f"{job_id}-{int(time.time())}",
+                      input=json.dumps(execution_input),
+                  )
+                  execution_arn = execution["executionArn"]
+
+                  jobs_table.update_item(
+                      Key={"job_id": job_id},
+                      UpdateExpression="SET #status=:status, #stage=:stage, #updated_at=:updated_at, execution_arn=:execution_arn",
+                      ExpressionAttributeNames={
+                          "#status": "status",
+                          "#stage": "stage",
+                          "#updated_at": "updated_at",
+                      },
+                      ExpressionAttributeValues={
+                          ":status": "ORCHESTRATION_STARTED",
+                          ":stage": "STEP_FUNCTIONS_STARTED",
+                          ":updated_at": now_iso(),
+                          ":execution_arn": execution_arn,
+                      },
+                  )
+                  put_event(job_id, "ORCHESTRATION_STARTED", "STEP_FUNCTIONS_STARTED", "Step Functions execution started.")
+                  processed.append({"job_id": job_id, "execution_arn": execution_arn})
+
+              return {"processed_records": processed}
+
+  S3InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref S3IngestionLambda
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref AWS::AccountId
+
+Outputs:
+  DataBucketName:
+    Value: !Ref DataBucket
+  JobsTableName:
+    Value: !Ref JobsTable
+  EventsTableName:
+    Value: !Ref EventsTable
+  StateMachineArn:
+    Value: !Ref PhaseOneStateMachine
+  S3StarterLambdaName:
+    Value: !Ref S3IngestionLambda
+  StatusUpdaterLambdaName:
+    Value: !Ref StatusUpdaterLambda

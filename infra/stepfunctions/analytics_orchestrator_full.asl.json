@@ -1,0 +1,504 @@
+{
+  "Comment": "Data Automation full batch orchestration (S3 -> Glue -> Decision -> SageMaker -> Insights -> QuickSight)",
+  "StartAt": "SetDefaults",
+  "States": {
+    "SetDefaults": {
+      "Type": "Pass",
+      "Parameters": {
+        "job_id.$": "$.job_id",
+        "user_id.$": "$.user_id",
+        "filename.$": "$.filename",
+        "operation.$": "$.operation",
+        "description.$": "$.description",
+        "s3_input_bucket.$": "$.s3_input_bucket",
+        "s3_input_key.$": "$.s3_input_key",
+        "created_at.$": "$.created_at",
+        "config": {
+          "glue_job_name": "REPLACE_GLUE_JOB_NAME",
+          "processed_bucket": "REPLACE_PROCESSED_BUCKET",
+          "processed_prefix": "processed/glue",
+          "feature_bucket": "REPLACE_FEATURE_BUCKET",
+          "feature_prefix": "feature-engineered",
+          "summary_bucket": "REPLACE_PROCESSED_BUCKET",
+          "summary_prefix": "processed/summaries",
+          "model_bucket": "REPLACE_MODEL_BUCKET",
+          "training_image_uri": "REPLACE_SAGEMAKER_SKLEARN_IMAGE_URI",
+          "training_code_s3_uri": "REPLACE_SAGEMAKER_CODE_TAR_S3_URI",
+          "sagemaker_role_arn": "REPLACE_SAGEMAKER_EXECUTION_ROLE_ARN"
+        }
+      },
+      "Next": "MarkPipelineRunning"
+    },
+    "MarkPipelineRunning": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_STATUS_UPDATER_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "status": "RUNNING",
+          "stage": "PIPELINE_STARTED",
+          "message": "Step Functions execution started."
+        }
+      },
+      "ResultPath": "$.status_start",
+      "Next": "RunGluePreprocessing",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "RunGluePreprocessing": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName.$": "$.config.glue_job_name",
+        "Arguments": {
+          "--job_id.$": "$.job_id",
+          "--input_bucket.$": "$.s3_input_bucket",
+          "--input_key.$": "$.s3_input_key",
+          "--processed_bucket.$": "$.config.processed_bucket",
+          "--processed_prefix.$": "$.config.processed_prefix",
+          "--feature_bucket.$": "$.config.feature_bucket",
+          "--feature_prefix.$": "$.config.feature_prefix",
+          "--summary_bucket.$": "$.config.summary_bucket",
+          "--summary_prefix.$": "$.config.summary_prefix"
+        }
+      },
+      "ResultPath": "$.glue_result",
+      "Next": "MarkGlueCompleted",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "MarkGlueCompleted": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_STATUS_UPDATER_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "status": "RUNNING",
+          "stage": "GLUE_COMPLETED",
+          "message": "Glue preprocessing completed."
+        }
+      },
+      "ResultPath": "$.glue_status",
+      "Next": "LoadGlueSummary",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "LoadGlueSummary": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_LOAD_SUMMARY_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id"
+        }
+      },
+      "ResultSelector": {
+        "job_id.$": "$.Payload.job_id",
+        "summary_loaded_at.$": "$.Payload.summary_loaded_at",
+        "preprocessing_summary.$": "$.Payload.preprocessing_summary",
+        "schema_summary.$": "$.Payload.schema_summary",
+        "cleaned_data_s3_uri.$": "$.Payload.cleaned_data_s3_uri",
+        "feature_data_s3_uri.$": "$.Payload.feature_data_s3_uri",
+        "target_column_candidates.$": "$.Payload.target_column_candidates"
+      },
+      "ResultPath": "$.profile",
+      "Next": "DecideTask",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "DecideTask": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_DECISION_ENGINE_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "operation.$": "$.operation",
+          "description.$": "$.description",
+          "schema_summary.$": "$.profile.schema_summary",
+          "target_column_candidates.$": "$.profile.target_column_candidates"
+        }
+      },
+      "ResultSelector": {
+        "decision.$": "$.Payload.decision"
+      },
+      "ResultPath": "$.decision_block",
+      "Next": "MarkDecisionCompleted",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "MarkDecisionCompleted": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_STATUS_UPDATER_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "status": "RUNNING",
+          "stage": "DECISION_COMPLETED",
+          "message.$": "States.Format('Decision engine selected {} task on target {}', $.decision_block.decision.task_type, $.decision_block.decision.target_column)",
+          "extra_fields": {
+            "task_type.$": "$.decision_block.decision.task_type",
+            "target_column.$": "$.decision_block.decision.target_column"
+          }
+        }
+      },
+      "ResultPath": "$.decision_status",
+      "Next": "RouteByTask",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "RouteByTask": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.decision_block.decision.task_type",
+          "StringEquals": "classification",
+          "Next": "TrainClassificationModel"
+        },
+        {
+          "Variable": "$.decision_block.decision.task_type",
+          "StringEquals": "forecasting",
+          "Next": "TrainForecastingModel"
+        }
+      ],
+      "Default": "TrainRegressionModel"
+    },
+    "TrainRegressionModel": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+      "Parameters": {
+        "TrainingJobName.$": "States.Format('da-reg-{}-{}', $.job_id, $.created_at)",
+        "AlgorithmSpecification": {
+          "TrainingImage.$": "$.config.training_image_uri",
+          "TrainingInputMode": "File"
+        },
+        "RoleArn.$": "$.config.sagemaker_role_arn",
+        "OutputDataConfig": {
+          "S3OutputPath.$": "States.Format('s3://{}/models/{}/', $.config.model_bucket, $.job_id)"
+        },
+        "ResourceConfig": {
+          "InstanceCount": 1,
+          "InstanceType": "ml.m5.large",
+          "VolumeSizeInGB": 30
+        },
+        "StoppingCondition": {
+          "MaxRuntimeInSeconds": 3600
+        },
+        "InputDataConfig": [
+          {
+            "ChannelName": "train",
+            "DataSource": {
+              "S3DataSource": {
+                "S3DataType": "S3Prefix",
+                "S3Uri.$": "$.profile.feature_data_s3_uri",
+                "S3DataDistributionType": "FullyReplicated"
+              }
+            }
+          }
+        ],
+        "HyperParameters": {
+          "sagemaker_program": "train_model.py",
+          "sagemaker_submit_directory.$": "$.config.training_code_s3_uri",
+          "task_type": "regression",
+          "algorithm": "linear_regression",
+          "target_column.$": "$.decision_block.decision.target_column"
+        }
+      },
+      "ResultPath": "$.training",
+      "Next": "CollectModelMetrics",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "TrainClassificationModel": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+      "Parameters": {
+        "TrainingJobName.$": "States.Format('da-cls-{}-{}', $.job_id, $.created_at)",
+        "AlgorithmSpecification": {
+          "TrainingImage.$": "$.config.training_image_uri",
+          "TrainingInputMode": "File"
+        },
+        "RoleArn.$": "$.config.sagemaker_role_arn",
+        "OutputDataConfig": {
+          "S3OutputPath.$": "States.Format('s3://{}/models/{}/', $.config.model_bucket, $.job_id)"
+        },
+        "ResourceConfig": {
+          "InstanceCount": 1,
+          "InstanceType": "ml.m5.large",
+          "VolumeSizeInGB": 30
+        },
+        "StoppingCondition": {
+          "MaxRuntimeInSeconds": 3600
+        },
+        "InputDataConfig": [
+          {
+            "ChannelName": "train",
+            "DataSource": {
+              "S3DataSource": {
+                "S3DataType": "S3Prefix",
+                "S3Uri.$": "$.profile.feature_data_s3_uri",
+                "S3DataDistributionType": "FullyReplicated"
+              }
+            }
+          }
+        ],
+        "HyperParameters": {
+          "sagemaker_program": "train_model.py",
+          "sagemaker_submit_directory.$": "$.config.training_code_s3_uri",
+          "task_type": "classification",
+          "algorithm": "random_forest",
+          "target_column.$": "$.decision_block.decision.target_column"
+        }
+      },
+      "ResultPath": "$.training",
+      "Next": "CollectModelMetrics",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "TrainForecastingModel": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+      "Parameters": {
+        "TrainingJobName.$": "States.Format('da-fc-{}-{}', $.job_id, $.created_at)",
+        "AlgorithmSpecification": {
+          "TrainingImage.$": "$.config.training_image_uri",
+          "TrainingInputMode": "File"
+        },
+        "RoleArn.$": "$.config.sagemaker_role_arn",
+        "OutputDataConfig": {
+          "S3OutputPath.$": "States.Format('s3://{}/models/{}/', $.config.model_bucket, $.job_id)"
+        },
+        "ResourceConfig": {
+          "InstanceCount": 1,
+          "InstanceType": "ml.m5.large",
+          "VolumeSizeInGB": 30
+        },
+        "StoppingCondition": {
+          "MaxRuntimeInSeconds": 3600
+        },
+        "InputDataConfig": [
+          {
+            "ChannelName": "train",
+            "DataSource": {
+              "S3DataSource": {
+                "S3DataType": "S3Prefix",
+                "S3Uri.$": "$.profile.feature_data_s3_uri",
+                "S3DataDistributionType": "FullyReplicated"
+              }
+            }
+          }
+        ],
+        "HyperParameters": {
+          "sagemaker_program": "train_model.py",
+          "sagemaker_submit_directory.$": "$.config.training_code_s3_uri",
+          "task_type": "forecasting",
+          "algorithm": "linear_regression",
+          "target_column.$": "$.decision_block.decision.target_column"
+        }
+      },
+      "ResultPath": "$.training",
+      "Next": "CollectModelMetrics",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "CollectModelMetrics": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_COLLECT_METRICS_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "training.$": "$.training"
+        }
+      },
+      "ResultSelector": {
+        "training_job_name.$": "$.Payload.training_job_name",
+        "model_artifact_s3_uri.$": "$.Payload.model_artifact_s3_uri",
+        "model_metrics.$": "$.Payload.model_metrics"
+      },
+      "ResultPath": "$.model",
+      "Next": "MarkModelCompleted",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "MarkModelCompleted": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_STATUS_UPDATER_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "status": "RUNNING",
+          "stage": "MODEL_COMPLETED",
+          "message": "Model training and evaluation completed.",
+          "extra_fields": {
+            "model_artifact_s3_uri.$": "$.model.model_artifact_s3_uri",
+            "model_metrics.$": "$.model.model_metrics"
+          }
+        }
+      },
+      "ResultPath": "$.model_status",
+      "Next": "GenerateInsights",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "GenerateInsights": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_INSIGHTS_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "description.$": "$.description",
+          "decision.$": "$.decision_block.decision",
+          "preprocessing_summary.$": "$.profile.preprocessing_summary",
+          "model_metrics.$": "$.model.model_metrics"
+        }
+      },
+      "ResultSelector": {
+        "summary.$": "$.Payload.summary",
+        "insights.$": "$.Payload.insights",
+        "recommendations.$": "$.Payload.recommendations"
+      },
+      "ResultPath": "$.insight_output",
+      "Next": "RefreshQuickSight",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "RefreshQuickSight": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_QUICKSIGHT_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id"
+        }
+      },
+      "ResultSelector": {
+        "dashboard_embed_url.$": "$.Payload.dashboard_embed_url",
+        "quicksight_ingestion_id.$": "$.Payload.quicksight_ingestion_id"
+      },
+      "ResultPath": "$.quicksight",
+      "Next": "FinalizeResults",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "FinalizeResults": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_FINALIZER_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "status": "SUCCEEDED",
+          "stage": "PIPELINE_COMPLETED",
+          "description.$": "$.description",
+          "decision.$": "$.decision_block.decision",
+          "cleaned_data_s3_uri.$": "$.profile.cleaned_data_s3_uri",
+          "model_artifact_s3_uri.$": "$.model.model_artifact_s3_uri",
+          "model_metrics.$": "$.model.model_metrics",
+          "summary.$": "$.insight_output.summary",
+          "insights.$": "$.insight_output.insights",
+          "recommendations.$": "$.insight_output.recommendations",
+          "dashboard_embed_url.$": "$.quicksight.dashboard_embed_url"
+        }
+      },
+      "ResultPath": "$.final_result",
+      "Next": "Success",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "HandleFailure"
+        }
+      ]
+    },
+    "HandleFailure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "REPLACE_LAMBDA_FAILURE_ARN",
+        "Payload": {
+          "job_id.$": "$.job_id",
+          "stage": "PIPELINE_FAILED",
+          "error.$": "$.error"
+        }
+      },
+      "Next": "FailState"
+    },
+    "FailState": {
+      "Type": "Fail"
+    },
+    "Success": {
+      "Type": "Succeed"
+    }
+  }
+}

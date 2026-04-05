@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowInvokePipelineLambdas",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:InvokeFunction"
+      ],
+      "Resource": [
+        "REPLACE_LAMBDA_STATUS_UPDATER_ARN",
+        "REPLACE_LAMBDA_LOAD_SUMMARY_ARN",
+        "REPLACE_LAMBDA_DECISION_ENGINE_ARN",
+        "REPLACE_LAMBDA_COLLECT_METRICS_ARN",
+        "REPLACE_LAMBDA_INSIGHTS_ARN",
+        "REPLACE_LAMBDA_QUICKSIGHT_ARN",
+        "REPLACE_LAMBDA_FINALIZER_ARN",
+        "REPLACE_LAMBDA_FAILURE_ARN"
+      ]
+    },
+    {
+      "Sid": "AllowGlueRun",
+      "Effect": "Allow",
+      "Action": [
+        "glue:StartJobRun",
+        "glue:GetJobRun",
+        "glue:GetJobRuns"
+      ],
+      "Resource": [
+        "arn:aws:glue:REPLACE_REGION:REPLACE_ACCOUNT_ID:job/REPLACE_GLUE_JOB_NAME"
+      ]
+    },
+    {
+      "Sid": "AllowSageMakerTraining",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateTrainingJob",
+        "sagemaker:DescribeTrainingJob",
+        "sagemaker:StopTrainingJob"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowPassSageMakerRole",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": "REPLACE_SAGEMAKER_EXECUTION_ROLE_ARN"
+    },
+    {
+      "Sid": "AllowStepFunctionsLogging",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:UpdateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:DescribeResourcePolicies",
+        "logs:DescribeLogGroups"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

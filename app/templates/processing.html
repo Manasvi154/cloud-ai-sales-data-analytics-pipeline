@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps, status_badge %}
+{% block title %}Processing | Data Automation{% endblock %}
+{% block content %}
+<section class="space-y-6">
+    {{ page_header("Step 3", "Pipeline Status", "Track progress as data flows across AWS services.") }}
+    {{ pipeline_steps("3") }}
+
+    <div class="grid lg:grid-cols-[1.4fr,1fr] gap-4 items-start">
+        <article class="card p-6 md:p-8 text-center reveal">
+            <p class="text-slate-300">Job <code>{{ job.job_id }}</code></p>
+            <div class="mt-3" data-job-status>{{ status_badge(job.status) }}</div>
+            <div class="mx-auto mt-7 h-16 w-16 border-4 border-cyan-200/30 border-t-cyan-300 rounded-full spinner"></div>
+
+            <div class="progress-track mt-8">
+                <div class="progress-fill" data-job-progress data-progress="{{ 100 if job.status in ['SUCCEEDED', 'FAILED'] else 55 }}"></div>
+            </div>
+            <p class="text-xs text-slate-300 mt-3" data-job-stage>Current stage: {{ job.stage }}</p>
+
+            <div class="mt-7">
+                {{ action_button(url_for('analysis.results', job_id=job.job_id), "Open Results", "primary") }}
+            </div>
+        </article>
+
+        <aside class="card p-5 reveal text-sm">
+            <p class="font-bold mb-3">Execution Timeline</p>
+            <div class="timeline">
+                {% if events %}
+                    {% for event in events %}
+                    <p class="timeline-item" data-job-event>{{ event.event_ts }} | {{ event.stage }} | {{ event.message }}</p>
+                    {% endfor %}
+                {% else %}
+                    <p class="timeline-item" data-job-event>Dataset accepted and queued.</p>
+                {% endif %}
+            </div>
+        </aside>
+    </div>
+
+    <div
+        id="job-monitor"
+        data-job-id="{{ job.job_id }}"
+        data-status-url="{{ url_for('analysis.job_status_api', job_id=job.job_id) }}"
+        data-poll-seconds="{{ poll_seconds }}"
+    ></div>
+</section>
+{% endblock %}

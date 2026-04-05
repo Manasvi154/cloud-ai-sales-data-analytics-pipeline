@@ -1,0 +1,17 @@
+{
+  "REPLACE_GLUE_JOB_NAME": "da-glue-preprocess-dev",
+  "REPLACE_PROCESSED_BUCKET": "data-automation-dev-yourname",
+  "REPLACE_FEATURE_BUCKET": "data-automation-dev-yourname",
+  "REPLACE_MODEL_BUCKET": "data-automation-dev-yourname",
+  "REPLACE_SAGEMAKER_SKLEARN_IMAGE_URI": "683313688378.dkr.ecr.ap-south-1.amazonaws.com/sagemaker-scikit-learn:1.2-1-cpu-py3",
+  "REPLACE_SAGEMAKER_CODE_TAR_S3_URI": "s3://data-automation-dev-yourname/code/artifacts/sagemaker/train_model.tar.gz",
+  "REPLACE_SAGEMAKER_EXECUTION_ROLE_ARN": "arn:aws:iam::123456789012:role/da-sagemaker-execution-role",
+  "REPLACE_LAMBDA_STATUS_UPDATER_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-update-job-status",
+  "REPLACE_LAMBDA_LOAD_SUMMARY_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-load-glue-summary",
+  "REPLACE_LAMBDA_DECISION_ENGINE_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-decision-engine",
+  "REPLACE_LAMBDA_COLLECT_METRICS_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-collect-training-metrics",
+  "REPLACE_LAMBDA_INSIGHTS_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-generate-insights",
+  "REPLACE_LAMBDA_QUICKSIGHT_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-refresh-quicksight",
+  "REPLACE_LAMBDA_FINALIZER_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-finalize-results",
+  "REPLACE_LAMBDA_FAILURE_ARN": "arn:aws:lambda:ap-south-1:123456789012:function:da-handle-failure"
+}
