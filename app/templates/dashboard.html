@@ -1,33 +1,121 @@
 {% extends "base.html" %}
 {% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+
 {% block title %}Dashboard | Data Automation{% endblock %}
+
 {% block content %}
 <section class="space-y-6">
-    {{ page_header("Step 5", "Dashboard Preview", "QuickSight embed will replace this placeholder in Phase 8.") }}
+    <p id="loadingText">Loading charts...</p>
+    {{ page_header("Step 5", "Dashboard Preview", "Real analytics dashboard") }}
     {{ pipeline_steps("5") }}
-
-    <div class="card p-6 reveal">
-        <h2 class="font-bold mb-4">Feature Importance (Mock)</h2>
-        {% set values = [78, 62, 44, 31] %}
-        {% set labels = ["engagement_score", "avg_order_value", "retention_days", "campaign_touchpoints"] %}
-        <div class="space-y-4">
-            {% for value in values %}
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span>{{ labels[loop.index0] }}</span>
-                    <span>{{ value }}%</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" data-progress="{{ value }}"></div>
-                </div>
-            </div>
-            {% endfor %}
+    <div class="grid md:grid-cols-4 gap-4">
+        <div class="card p-4">
+            <p>📈 Total Sales</p>
+            <h2>{{ chart_data.total_sales }}</h2>
+        </div>
+        <div class="card p-4">
+            <p>📊 Avg Sales</p>
+            <h2>{{ chart_data.avg_sales }}</h2>
+        </div>
+        <div class="card p-4">
+            <p>🛍️ Top Category</p>
+            <h2>{{ chart_data.top_category }}</h2>
+        </div>
+        <div class="card p-4">
+            <p>📍Top Region</p>
+            <h2>{{ chart_data.top_region }}</h2>
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="grid md:grid-cols-2 gap-4">
+        <div class="card p-4">
+            <h3>📈 Sales Trend</h3>
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <div class="card p-4">
+            <h3>📊 Category Performance</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card p-4">
+        <h3>🌍 Region Distribution</h3>
+        <div style="max-width: 400px; margin: auto;">
+            <canvas id="regionChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Buttons -->
     <div class="flex gap-3 flex-wrap">
         {{ action_button(url_for('analysis.report', job_id=job.job_id), "Go to Report", "primary") }}
         {{ action_button(url_for('analysis.history'), "Back to History", "secondary") }}
     </div>
+    
+    <!-- Chart Script -->
+    <script>
+        document.getElementById("loadingText")?.remove();
+        const data = JSON.parse('{{ chart_data | tojson | safe }}'); //jinja data
+
+        // Sales Trend
+        new Chart(document.getElementById('salesChart'), {
+            type: 'line',
+            data: {
+                labels: data.monthly_labels,
+                datasets: [{
+                    label: 'Sales Trend',
+                    data: data.monthly_values,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: { enabled: true },
+                    legend: { position: 'top' }
+                }
+            }
+        });
+
+        // Category Chart
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'bar',
+            data: {
+                labels: data.category_labels,
+                datasets: [{
+                    label: 'Category Sales',
+                    data: data.category_values
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: { enabled: true },
+                    legend: { position: 'top' }
+                }
+            }
+        });
+
+        // Region Chart
+        new Chart(document.getElementById('regionChart'), {            
+            type: 'pie',
+            data: {
+                labels: data.region_labels,
+                datasets: [{
+                    data: data.region_values
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+    </script>
+
 </section>
 {% endblock %}
+
