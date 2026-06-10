@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+
+{% block title %}Dashboard | Data Automation{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+
+    {{ page_header("Step 5", "Dashboard Preview", "Real analytics dashboard") }}
+    {{ pipeline_steps("5") }}
+
+    {% if embed_url %}
+    
+    <div class="card p-4">
+        <iframe 
+            width="100%" 
+            height="800px"
+            src="{{ embed_url }}"
+            frameborder="0">
+        </iframe>
+    </div>
+    
+
+    {% else %}
+    <div class="card p-6 text-center">
+        <h2 class="text-lg font-bold text-red-400">No Dashboard Available</h2>
+        <p class="text-sm text-slate-300 mt-2">
+            {{ error if error else "Pipeline failed or no data available." }}
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Buttons -->
+    <div class="flex gap-3 flex-wrap">
+        {{ action_button(url_for('analysis.report', job_id=job.job_id), "Go to Report", "primary") }}
+        {{ action_button(url_for('analysis.history'), "Back to History", "secondary") }}
+    </div>
+
+</section>
+{% endblock %}

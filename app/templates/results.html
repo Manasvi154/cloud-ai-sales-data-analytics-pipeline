@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+
+{% block title %}Results | Data Automation{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+
+    {{ page_header("Step 4", "Results Summary", job.result.summary) }}
+    {{ pipeline_steps("4", job) }}
+
+    {% if error %}
+        <p class="text-red-400">{{ error }}</p>
+    {% endif %}
+
+
+    <!-- ============================== -->
+    <!-- METRICS -->
+    <!-- ============================== -->
+
+
+    {% set labels = {
+        "total_sales": "Total Sales",
+        "avg_sales": "Average Sales",
+        "next_month_forecast": "Next 6-Months Forecast",
+        "growth_display": "Growth Rate",
+        "trend": "Trend",
+        "trend_strength": "Trend Strength",
+        "forecast_confidence": "Forecast Confidence",
+        "forecast_range": "Forecast Range",
+        "risk_indicator": "Risk Indicator",
+        "best_month": "Best Month",
+        "worst_month": "Worst Month"
+    } %}
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+        {% for key, value in job.result.metrics.items() %}
+        
+        <article class="metric-card reveal">
+            <p class="metric-label">
+                {{ labels.get(key, key.replace('_', ' ').title()) }}
+            </p>
+            
+            <p class="metric-value">
+                {% if key == "trend" %}
+                    {{ value|capitalize }}
+                {% elif key == "growth_display" %}
+                    {{ value }}
+                {% else %}
+                    {{ value }}
+                {% endif %}
+            </p>
+            </p>
+        </article>
+
+        {% endfor %}
+    </div>
+    <!-- ============================== -->
+    <!-- EXTRA BUSINESS DATA -->
+    <!-- ============================== -->
+
+    {% if job.result.category_share %}
+    <div class="grid md:grid-cols-2 gap-4">
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">Category Contribution (%)</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for k, v in job.result.category_share.items() %}
+                    <li>{{ k }} → {{ v }}%</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">Region Contribution (%)</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for k, v in job.result.region_share.items() %}
+                    <li>{{ k }} → {{ v }}%</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+    </div>
+    {% endif %}
+
+    <!-- ============================== -->
+    <!-- TOP / LOW CATEGORIES -->
+    <!-- ============================== -->
+
+    {% if job.result.top_categories %}
+    <div class="grid md:grid-cols-2 gap-4">
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">Top 3 Categories</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for k, v in job.result.top_categories.items() %}
+                    <li>{{ k }} → {{ v }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">Bottom 3 Categories</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for k, v in job.result.low_categories.items() %}
+                    <li>{{ k }} → {{ v }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+    </div>
+    {% endif %}
+
+    <!-- ============================== -->
+    <!-- REGION RANKING -->
+    <!-- ============================== -->
+
+    {% if job.result.region_ranking %}
+    <article class="card p-5 reveal">
+        <h2 class="font-bold mb-3">Region Ranking</h2>
+        <ol class="space-y-2 text-sm text-slate-200">
+            {% for region, val in job.result.region_ranking.items() %}
+                <li>{{ region }} : {{ val }}</li>
+            {% endfor %}
+        </ol>
+    </article>
+    {% endif %}
+
+    {% set cat = request.args.get('category', 'all') %}
+    {% set reg = request.args.get('region', 'all') %}
+    {% set yr = request.args.get('year', 'all') %}
+
+    {% if job.operation == "business_analysis" %}
+    <div class="text-sm text-gray-600 mb-2">
+        Showing results for:
+        <b>{{ cat|capitalize }}</b> |
+        <b>{{ reg|capitalize }}</b> |
+        <b>{{ yr }}</b>
+    </div>
+    {% endif %}
+    <!-- ============================== -->
+    <!-- FILTERS -->
+    <!-- ============================== -->
+
+    <div class="mb-6">
+        <div class="max-w-4xl">
+            {% if job.operation == "business_analysis" %}
+            <form method="GET" class="flex gap-3 flex-wrap items-center">
+
+                <select name="category" class="input py-2 px-3 text-sm w-48">
+                    <option value="all">All Categories</option>
+                    {% for c in job.result.category_list %}
+                        <option value="{{ c }}" {% if request.args.get('category') == c %}selected{% endif %}>
+                            {{ c }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <select name="region" class="input py-2 px-3 text-sm w-48">
+                    <option value="all">All Regions</option>
+                    {% for r in job.result.region_list %}
+                        <option value="{{ r }}" {% if request.args.get('region') == r %}selected{% endif %}>
+                            {{ r }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <select name="year" class="input py-2 px-3 text-sm w-40">
+                    <option value="all">All Years</option>
+                    {% for y in job.result.year_list %}
+                        <option value="{{ y }}" {% if request.args.get('year') == y|string %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn-primary py-2 px-4 text-sm">
+                    Apply
+                </button>
+
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- DUAL METRICS -->
+    <!-- ============================== -->
+
+    {% if job.operation == "business_analysis" %}
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+
+        <div class="card p-5">
+            <h3 class="font-bold mb-2">Units Analysis</h3>
+            <p>Total Units: {{ job.result.filtered_units.total }}</p>
+            <p>Avg Units: {{ job.result.filtered_units.avg }}</p>
+        </div>
+
+        <div class="card p-5">
+            <h3 class="font-bold mb-2">Revenue Analysis</h3>
+            <p>Total Revenue: ₹{{ "{:,.2f}".format(job.result.filtered_revenue.total) }}</p>
+            <p>Avg Revenue: ₹{{ "{:,.2f}".format(job.result.filtered_revenue.avg) }}</p>
+        </div>
+
+    </div>
+    {% endif %}
+    <!-- ============================== -->
+    <!-- INSIGHTS & RECOMMENDATIONS -->
+    <!-- ============================== -->
+
+    <div class="grid md:grid-cols-2 gap-4 items-start mt-4">
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">GenAI Insights</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for item in job.result.insights %}
+                    <li>- {{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="card p-5 reveal">
+            <h2 class="font-bold mb-3">Recommendations</h2>
+            <ul class="space-y-2 text-sm text-slate-200">
+                {% for item in job.result.recommendations %}
+                    <li>- {{ item }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+    </div>
+
+    <!-- ============================== -->
+    <!-- ACTION BUTTONS -->
+    <!-- ============================== -->
+
+    <div class="flex gap-3 flex-wrap">
+        {{ action_button(url_for('analysis.dashboard', job_id=job.job_id), "View Dashboard", "primary") }}
+        {{ action_button(url_for('analysis.report', job_id=job.job_id), "Download Report", "secondary") }}
+    </div>
+
+</section>
+{% endblock %}

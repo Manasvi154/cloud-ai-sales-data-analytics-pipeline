@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+.idea/
+.vscode/
+instance/
+# ML Models
+*.joblib
+*.pkl
+app/ml_models/outputs/

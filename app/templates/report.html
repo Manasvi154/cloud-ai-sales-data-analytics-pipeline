@@ -1,0 +1,123 @@
+
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps %}
+{% block title %}Report | Data Automation{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+
+    {{ page_header("Step 6", "Downlodable Report", "A structured, presentation-ready report built from the uploaded dataset.") }}
+    {{ pipeline_steps("6", job=job) }}
+
+    <article class="card p-6 report-shell reveal">
+
+        <!-- EXECUTIVE SUMMARY -->
+        <div class="report-hero">
+            <p class="eyebrow">Executive Summary</p>
+            <h2>{{ report.title }}</h2>
+            <p>{{ report.executive_summary }}</p>
+            <p class="report-meta">Operation: {{ report.operation }} | Status: {{ report.status }}</p>
+        </div>
+
+        <!-- DATASET + CLEANING -->
+        <div class="report-grid">
+            <section class="report-section reveal">
+                <h3>Dataset Overview</h3>
+                <ul>
+                    {% for item in report.sections.dataset_overview %}
+                    <li class="clean-text">{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="report-section reveal">
+                <h3>Data Cleaning Summary</h3>
+                <ul>
+                    {% for item in report.sections.preprocessing %}
+                    <li class="clean-text">{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+
+        <!-- MODE BASED -->
+        {% if report.sections.mode_sections %}
+        <div class="report-grid">
+            {% for section in report.sections.mode_sections %}
+            <section class="report-section reveal">
+                <h3>{{ section.title }}</h3>
+                <ul>
+                    {% for item in section["items"] %}
+                    <li class="clean-text">- {{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        <!-- DASHBOARD -->
+        <section class="report-section reveal">
+            <h3>Dashboard Snapshot</h3>
+
+            <div class="report-kpis">
+                {% for item in report.dashboard.kpis %}
+                <div class="metric-card">
+                    <p class="metric-label">{{ item.label }}</p>
+                    <p class="metric-value">{{ item.display_value }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="report-grid mt-4">
+                {% for chart in report.dashboard.charts[:2] %}
+                <div class="card p-4">
+                    <h4>{{ chart.title }}</h4>
+                    <canvas id="chart{{ loop.index }}"></canvas>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- INSIGHTS + RECOMMENDATIONS -->
+        <div class="report-grid">
+            <section class="report-section reveal">
+                <h3>Insights</h3>
+                <ul>
+                    {% for item in report.insights %}
+                    <li class="clean-text">- {{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="report-section reveal">
+                <h3>Recommendations</h3>
+                <ul>
+                    {% for item in report.recommendations %}
+                    <li class="clean-text">- {{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+
+        <!-- CONCLUSION -->
+        <section class="report-section reveal">
+            <h3>Conclusion</h3>
+            <p>This report reflects the uploaded dataset after preprocessing, validation, and feature generation.
+                The findings, dashboard metrics, and recommendations above are generated from observed values in the dataset rather than placeholders.</p>
+        </section>
+
+    </article>
+
+    <!-- ACTION BUTTONS -->
+    <div class="flex gap-3 flex-wrap">
+        <button class="btn-primary" id="downloadPDF">Download PDF</button>
+        <button class="btn-secondary" onclick="window.print()">Print</button>
+
+        {{ action_button(url_for('analysis.dashboard', job_id=job.job_id), "Back to Dashboard", "secondary") }}
+        {{ action_button(url_for('dataset.upload_dataset'), "Run New Analysis", "ghost") }}
+    </div>
+
+</section>
+{% endblock %}

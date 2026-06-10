@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "components/ui.html" import action_button, page_header, pipeline_steps, status_badge %}
+{% block title %}Processing | Data Automation{% endblock %}
+{% block content %}
+<section class="space-y-6">
+    {{ page_header("Step 3", "Pipeline Status", "Track progress as data flows across AWS services.") }}
+    {{ pipeline_steps("3", job) }}
+
+    <div class="grid lg:grid-cols-[1.4fr,1fr] gap-4 items-start">
+        <article class="card p-6 md:p-8 text-center reveal">
+            <p class="text-slate-300">Job <code>{{ job.job_id }}</code></p>
+            <div class="mt-3">{{ status_badge(job.status) }}</div>
+            {% if job.status == "SUCCEEDED" %}
+                <div class="mt-7 text-green-400 text-2xl font-bold">✔ Completed</div>
+            {% else %}
+                <div class="mx-auto mt-7 h-16 w-16 border-4 border-cyan-200/30 border-t-cyan-300 rounded-full spinner"></div>
+            {% endif %}
+
+            <div class="progress-track mt-8">
+                <div class="progress-fill" data-progress="100"></div>
+            </div>
+            <p class="text-xs text-slate-300 mt-3">
+                Pipeline executed successfully using real-time data processing.
+            </p>
+
+            <div class="mt-7">
+                {{ action_button(url_for('analysis.results', job_id=job.job_id), "Open Results", "primary") }}
+            </div>
+        </article>
+
+        <aside class="card p-5 reveal text-sm">
+            <p class="font-bold mb-3">Execution Timeline</p>
+            <div class="timeline">
+                <p class="timeline-item">Dataset accepted and queued</p>
+                <p class="timeline-item">ETL and feature preparation completed</p>
+                <p class="timeline-item">Model execution completed</p>
+                <p class="timeline-item">Insight report prepared</p>
+            </div>
+        </aside>
+    </div>
+</section>
+{% endblock %}
