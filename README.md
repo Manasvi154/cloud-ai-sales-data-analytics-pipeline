@@ -69,23 +69,6 @@ App URL: `http://127.0.0.1:5000`
 python -m pytest -q
 ```
 
-## Required AWS Prep
-Detailed click-by-click instructions are in [DevInstructions.txt](DevInstructions.txt).
-
-Critical team action:
-- Manasvi must create/provide IAM access (Access Key + Secret) for Kunal with scoped permissions to unblock integration.
-
-## Transfer Pack For Manasvi
-- [MANASVI_CODEX_CONTEXT.md](MANASVI_CODEX_CONTEXT.md)
-- [manasvi.md](manasvi.md)
-- [docs/MANASVI_PIPELINE_RUNBOOK.md](docs/MANASVI_PIPELINE_RUNBOOK.md)
-
-## Phase Documents
-- [docs/PHASE_01.md](docs/PHASE_01.md)
-- [docs/PHASE_02.md](docs/PHASE_02.md)
-- [docs/PHASE_03.md](docs/PHASE_03.md)
-- [docs/MANASVI_PIPELINE_RUNBOOK.md](docs/MANASVI_PIPELINE_RUNBOOK.md)
-
 ## Phase Roadmap
 1. Architecture and repo setup
 2. Frontend UI framework hardening
@@ -100,5 +83,5 @@ Critical team action:
 11. Deployment + production hardening
 
 ## Contributors
-- Kunal: Frontend, ML models, SageMaker, API integration
-- Manasvi: AWS pipeline, Lambda, Step Functions, Glue, Athena, IAM setup
+- Kunal: Backend, ML models, SageMaker, API integration
+- Manasvi: Frontend, AWS pipeline, S3, IAM setup
