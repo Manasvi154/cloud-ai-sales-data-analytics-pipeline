@@ -6,9 +6,9 @@ from .logger import get_logger
 logger = get_logger()
 # AWS CREDENTIALS
 
-AWS_ACCESS_KEY = "AKIAWRMEX7MKRZNDDBJY"
-AWS_SECRET_KEY = "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"
-AWS_REGION = "ap-south-1"
+AWS_ACCESS_KEY = ""
+AWS_SECRET_KEY = ""
+AWS_REGION = ""
 
 BUCKET_NAME = "retail-sales-analytics-pipeline"
 
